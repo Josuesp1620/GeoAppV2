@@ -20,11 +20,13 @@ import com.geosolution.geoapp.R
 import com.geosolution.geoapp.presentation.screens.auth.started.components.StartedPageContent
 import com.geosolution.geoapp.presentation.screens.auth.started.components.StartedPageHeader
 import com.geosolution.geoapp.presentation.screens.auth.started.viewmodel.StartedPageViewModel
+import com.geosolution.geoapp.presentation.screens.main.viewmodel.AuthState
 import com.geosolution.geoapp.presentation.ui.utils.event.Event
 import com.geosolution.geoapp.presentation.ui.utils.event.collectWithLifecycle
 
 @Composable
 fun StartedPageScreen(
+    authState: AuthState,
     navController: NavController,
     viewModel: StartedPageViewModel = hiltViewModel()
 ) {
@@ -56,12 +58,13 @@ fun StartedPageScreen(
             )
 
             StartedPageContent(
+                authState = authState,
                 navigateToSigInScreen = {
                     viewModel.goToSigInScreen()
                 },
-                navigateToSigUpScreen =
+                navigateToHomeScreen =
                 {
-                    viewModel.goToSigUpScreen()
+                    viewModel.goToHomeScreen()
                 },
             )
         }

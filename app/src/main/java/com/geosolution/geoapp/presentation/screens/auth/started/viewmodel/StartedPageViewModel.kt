@@ -22,9 +22,9 @@ class StartedPageViewModel @Inject constructor(
         }
     }
 
-    fun goToSigUpScreen(){
+    fun goToHomeScreen(){
         viewModelScope.launch(Dispatchers.IO) {
-            sendEvent(Event.NavigateTo(NavScreen.SignUpScreen.route))
+            sendEvent(Event.NavigateTo(NavScreen.HomeScreen.route))
         }
     }
 }
