@@ -7,9 +7,9 @@
 
     <application>
         <activity
-            android:name=".gel"
+            android:name=".GeoLocationActivity"
             android:launchMode="singleTask"
-            android:theme="@style/LocusTheme" />
+            android:theme="@style/GeoLocationTheme" />
 
         <receiver
             android:name=".LocationBroadcastReceiver"
