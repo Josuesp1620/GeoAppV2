@@ -6,7 +6,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class User(
     val id: String,
-    val fullname: String,
-    val username: String,
-    val avatar: String
+    val name: String,
+    val full_name: String,
+    val gender: String,
+    val image: String
 ) : Domain

@@ -71,7 +71,7 @@ class LocationService : LifecycleService() {
             setContentTitle("Location Service")
             result?.apply {
                 location?.let {
-                    setContentText("${it.latitude}, ${it.longitude} - Bearing: ${it.bearing.toInt()}°")
+                    setContentText("Coordinates: ${it.latitude},${it.longitude}\nBearing: ${it.bearing.toInt()}°")
                 } ?: setContentText("Error: ${error?.message}")
             } ?: setContentText("Trying to get location updates")
             setSmallIcon(R.drawable.ic_location)

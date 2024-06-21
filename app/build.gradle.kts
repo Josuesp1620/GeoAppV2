@@ -95,6 +95,7 @@ dependencies {
 
     // MapLibre
     implementation(libs.org.maplibre.gl)
+    implementation(libs.org.maplibre.gl.annotation.v9)
     
     // Compose
     implementation(platform(libs.androidx.compose.bom))

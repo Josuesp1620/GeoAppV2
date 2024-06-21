@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Size
@@ -29,17 +30,12 @@ fun ButtonAction(
     IconButton(
         onClick = onButtonClick,
         modifier = modifier
-            .clip(CircleShape)
-            .size(48.dp)
-            .shadow(
-                elevation = 4.dp,
-                shape = CircleShape,
-                clip = true
-            )
+            .clip(ShapeDefaults.Medium)
+            .size(38.dp)
             .background(
                 color = Color.White,
             )
-            .padding(8.dp)
+            .padding(10.dp)
     ) {
         Icon(
             imageVector = icon,

@@ -32,8 +32,8 @@ import com.geosolution.geoapp.presentation.screens.navigations.NavScreen
 import com.geosolution.geoapp.presentation.ui.theme.CampusXTheme
 import com.geosolution.geoapp.presentation.ui.utils.ComposeUtils
 import com.geosolution.geolocation.GeoLocation
-import com.mapbox.mapboxsdk.geometry.LatLng
 import kotlinx.coroutines.delay
+import org.maplibre.android.geometry.LatLng
 
 @Composable
 fun MapScreen(

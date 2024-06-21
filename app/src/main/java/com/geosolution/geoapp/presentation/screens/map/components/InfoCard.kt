@@ -50,8 +50,8 @@ fun InfoCard(
         modifier = modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(
-            topStart = 20.0.dp,
-            topEnd = 20.0.dp,
+            topStart = 15.0.dp,
+            topEnd = 15.0.dp,
             bottomEnd = 0.0.dp,
             bottomStart = 0.0.dp
         ),

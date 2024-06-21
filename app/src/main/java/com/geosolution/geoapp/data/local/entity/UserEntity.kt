@@ -9,21 +9,24 @@ import com.geosolution.geoapp.domain.model.User
 data class UserEntity(
     @PrimaryKey(autoGenerate = false)
     val id: String,
-    val fullname: String,
-    val username: String,
-    val avatar: String
+    val full_name: String,
+    val name: String,
+    val image: String,
+    val gender: String,
 ): DatabaseEntity {
     override fun asDomain(): User = User(
         id = id,
-        fullname = fullname,
-        username = username,
-        avatar = avatar
+        full_name = full_name,
+        name = name,
+        image = image,
+        gender = gender
     )
 }
 
 fun User.asDatabaseEntity() : UserEntity = UserEntity(
     id = id,
-    fullname = fullname,
-    username = username,
-    avatar =  avatar
+    full_name = full_name,
+    name = name,
+    image = image,
+    gender = gender
 )

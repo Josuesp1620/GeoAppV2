@@ -40,21 +40,12 @@ fun StartedPageContent(
             color = MaterialTheme.colorScheme.primary
         )
 
-        TextCustom(
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-                .padding(top = 5.dp),
-            text = "Gestiona tareas, clientes y ubicaciones, todo desde un solo lugar.",
-            textAlign = TextAlign.Center,
-            maxLines = 2,
-            fontSize = 17.0
-        )
-
         when (authState) {
             AuthState.Loading -> {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 20.dp),
+                        .padding(top = 20.dp, bottom = 20.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator(
