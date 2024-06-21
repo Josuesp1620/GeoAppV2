@@ -90,7 +90,9 @@ dependencies {
     implementation(libs.play.services.basement)
     implementation(libs.play.services.location)
 
-
+    // MapLibre
+    implementation(libs.org.maplibre.gl)
+    
     // Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
