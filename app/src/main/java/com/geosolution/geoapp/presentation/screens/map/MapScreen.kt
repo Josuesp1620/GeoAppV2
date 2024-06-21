@@ -31,6 +31,7 @@ import com.geosolution.geoapp.presentation.screens.map.components.Map
 import com.geosolution.geoapp.presentation.screens.navigations.NavScreen
 import com.geosolution.geoapp.presentation.ui.theme.CampusXTheme
 import com.geosolution.geoapp.presentation.ui.utils.ComposeUtils
+import com.geosolution.geolocation.GeoLocation
 import com.mapbox.mapboxsdk.geometry.LatLng
 import kotlinx.coroutines.delay
 
@@ -43,6 +44,10 @@ fun MapScreen(
 
     var mapSize by remember { mutableStateOf(Size(0f, 0f)) }
     var mapCenter by remember { mutableStateOf(Offset(0f, 0f)) }
+
+    GeoLocation.configure {
+
+    }
 
     LaunchedEffect(key1 = Unit) {
         delay(ComposeUtils.slideDownInDuration + 200L)
