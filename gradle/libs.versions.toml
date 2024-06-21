@@ -10,7 +10,9 @@ activityCompose = "1.9.0"
 composeBom = "2024.06.00"
 hiltAndroid = "2.51"
 kotlinKsp = "1.9.10-1.0.13"
-accompanist="0.35.1-alpha"
+playServicesBasement = "18.4.0"
+playServicesLocation = "21.3.0"
+
 [libraries]
 # Core KTX
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -44,6 +46,11 @@ ktor-content-negotiation = { group = "io.ktor", name="ktor-client-content-negoti
 ktor-serialization-kotlinx-json = { group = "io.ktor", name="ktor-serialization-kotlinx-json", version = "2.3.3" }
 ktor-logging = { group = "io.ktor", name="ktor-client-logging", version = "2.3.3" }
 ktor-auth = { group = "io.ktor", name="ktor-client-auth", version = "2.3.3" }
+
+# Play Services GMS
+play-services-basement = { group = "com.google.android.gms", name = "play-services-basement", version.ref = "playServicesBasement" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+
 
 # Compose
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }

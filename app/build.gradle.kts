@@ -86,6 +86,10 @@ dependencies {
     implementation(libs.ktor.logging)
     implementation(libs.ktor.auth)
 
+    // Play Services GMS
+    implementation(libs.play.services.basement)
+    implementation(libs.play.services.location)
+
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))
