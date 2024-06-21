@@ -29,11 +29,7 @@ fun HomeScreen(
         (context as? Activity)?.finish()
     }
 
-
     Scaffold(
-        topBar = {
-
-        },
         content = { paddingValues ->
             Box(
                 modifier = Modifier

@@ -9,6 +9,7 @@ import com.geosolution.geoapp.presentation.screens.auth.singup.SignUpScreen
 import com.geosolution.geoapp.presentation.screens.auth.started.StartedPageScreen
 import com.geosolution.geoapp.presentation.screens.home.HomeScreen
 import com.geosolution.geoapp.presentation.screens.main.viewmodel.AuthState
+import com.geosolution.geoapp.presentation.screens.map.MapScreen
 
 @Composable
 fun Navigation(
@@ -21,6 +22,9 @@ fun Navigation(
         }
         composable(route = NavScreen.HomeScreen.route) {
             HomeScreen(navigationController)
+        }
+        composable(route = NavScreen.MapScreen.route) {
+            MapScreen(navigationController)
         }
         composable(route = NavScreen.SignInScreen.route) {
             SignInScreen(navigationController)

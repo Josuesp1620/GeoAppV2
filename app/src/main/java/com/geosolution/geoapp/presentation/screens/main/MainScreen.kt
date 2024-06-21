@@ -1,23 +1,22 @@
 package com.geosolution.geoapp.presentation.screens.main
 
+import android.app.Activity
+import android.app.LocaleConfig
+import android.app.LocaleManager
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SheetState
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.geosolution.geoapp.core.location.LocationUtils
+import com.geosolution.geoapp.presentation.screens.main.components.LocationStatus
 import com.geosolution.geoapp.presentation.screens.main.components.NetworkStatus
 import com.geosolution.geoapp.presentation.screens.main.viewmodel.MainViewModel
 import com.geosolution.geoapp.presentation.screens.navigations.Navigation
@@ -31,6 +30,12 @@ fun MainScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = true) {
+        LocationUtils.checkAndRequestLocationSetting(context as Activity)
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
@@ -42,6 +47,10 @@ fun MainScreen(
         )
         NetworkStatus(
             stateProvider = { state.networkState },
+            modifier = Modifier.padding(paddingValues = paddingValues)
+        )
+        LocationStatus(
+            stateProvider = { state.locationState },
             modifier = Modifier.padding(paddingValues = paddingValues)
         )
     }
