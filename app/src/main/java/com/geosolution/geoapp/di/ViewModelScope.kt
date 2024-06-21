@@ -1,8 +1,11 @@
 package com.geosolution.geoapp.di
 
 import com.geosolution.geoapp.domain.repository.AuthRepository
+import com.geosolution.geoapp.domain.repository.LocationCurrentRepository
 import com.geosolution.geoapp.domain.use_case.CacheAuthUseCase
+import com.geosolution.geoapp.domain.use_case.CacheLocationCurrentUseCase
 import com.geosolution.geoapp.domain.use_case.GetCacheAuthUseCase
+import com.geosolution.geoapp.domain.use_case.GetCacheLocationCurrentUseCase
 import com.geosolution.geoapp.domain.use_case.SignInUseCase
 import com.geosolution.geoapp.domain.use_case.SignUpUseCase
 import dagger.Module
@@ -37,5 +40,17 @@ object ViewModelScope {
     @ViewModelScoped
     fun provideGetCacheAuthUseCase(authRepository: AuthRepository): GetCacheAuthUseCase {
         return GetCacheAuthUseCase(authRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun providesCacheLocationCurrentUseCase(locationCurrentRepository: LocationCurrentRepository): CacheLocationCurrentUseCase {
+        return CacheLocationCurrentUseCase(locationCurrentRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetCacheLocationCurrentUseCase(locationCurrentRepository: LocationCurrentRepository): GetCacheLocationCurrentUseCase {
+        return GetCacheLocationCurrentUseCase(locationCurrentRepository)
     }
 }

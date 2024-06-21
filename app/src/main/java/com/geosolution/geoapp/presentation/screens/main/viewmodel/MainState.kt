@@ -2,14 +2,12 @@ package com.geosolution.geoapp.presentation.screens.main.viewmodel
 
 import androidx.compose.runtime.Immutable
 import com.geosolution.geoapp.domain.model.Auth
-import com.geosolution.geoapp.presentation.common.connectivity.LocationTracker
 import com.geosolution.geoapp.presentation.common.connectivity.NetworkTracker
 
 @Immutable
 data class MainState(
     val authState: AuthState = AuthState.Loading,
     val networkState: NetworkTracker.State = NetworkTracker.Init,
-    val locationState: LocationTracker.State = LocationTracker.Init,
     val snackbar: String = ""
 )
 

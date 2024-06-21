@@ -24,6 +24,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GeoApp"
         tools:targetApi="tiramisu">
+        <service android:name=".core.location.LocationService" android:foregroundServiceType="location" />
+
         <activity
             android:name=".presentation.screens.main.MainActivity"
             android:exported="true"

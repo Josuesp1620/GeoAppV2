@@ -3,7 +3,6 @@ package com.geosolution.geoapp.presentation.screens.main.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.geosolution.geoapp.domain.use_case.GetCacheAuthUseCase
-import com.geosolution.geoapp.presentation.common.connectivity.LocationTracker
 import com.geosolution.geoapp.presentation.common.connectivity.NetworkTracker
 import com.geosolution.geoapp.presentation.screens.navigations.NavScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +23,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val networkTracker: NetworkTracker,
-    private val locationTracker: LocationTracker,
     private val getCacheAuthUseCase: GetCacheAuthUseCase
 ) : ViewModel(), ViewModelEvents<Event> by ViewModelEventsImpl() {
     private val _state = MutableStateFlow(MainState())
@@ -35,7 +33,6 @@ class MainViewModel @Inject constructor(
     init {
         loadAuthState()
         loadNetworkState()
-        loadLocationState()
     }
 
     private fun loadAuthState() {
@@ -67,15 +64,4 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun loadLocationState() {
-        viewModelScope.launch {
-            locationTracker.flow
-                .catch { e ->
-                    _state.update { state -> state.copy(snackbar = e.message ?: "") }
-                }
-                .collectLatest { locationState ->
-                    _state.update { state -> state.copy(locationState = locationState) }
-                }
-        }
-    }
 }

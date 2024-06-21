@@ -1,4 +1,4 @@
-package com.geosolution.geoapp.data.local
+package com.geosolution.geoapp.data.local.datastore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

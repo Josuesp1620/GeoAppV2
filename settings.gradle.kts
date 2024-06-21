@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "GeoApp"
 include(":app")
- 
+include(":geolocation")

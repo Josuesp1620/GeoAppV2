@@ -3,9 +3,10 @@ package com.geosolution.geoapp.di
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
-import com.geosolution.geoapp.data.local.AuthLocalDataStore
+import com.geosolution.geoapp.data.local.datastore.AuthLocalDataStore
 import com.geosolution.geoapp.data.local.dao.UserDao
 import com.geosolution.geoapp.data.local.database.Database
+import com.geosolution.geoapp.data.local.datastore.LocationCurrentLocalDataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,6 +22,12 @@ object RoomModule {
     @Singleton
     fun provideAuthLocalDataStore(@ApplicationContext context: Context): AuthLocalDataStore {
         return AuthLocalDataStore(dataStore = context.authStore)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLocationCurrentLocalDataStore(@ApplicationContext context: Context): LocationCurrentLocalDataStore {
+        return LocationCurrentLocalDataStore(dataStore = context.locationCurrentStore)
     }
 
     @Provides
@@ -42,3 +49,6 @@ object RoomModule {
 
 
 private val Context.authStore by preferencesDataStore("auth")
+
+private val Context.locationCurrentStore by preferencesDataStore("location_current")
+

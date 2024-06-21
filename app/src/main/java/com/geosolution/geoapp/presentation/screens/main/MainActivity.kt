@@ -1,8 +1,12 @@
 package com.geosolution.geoapp.presentation.screens.main
 
 import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -21,6 +25,7 @@ import com.geosolution.geoapp.core.location.RunUtils.hasAllPermission
 import com.geosolution.geoapp.core.location.RunUtils.hasLocationPermission
 import com.geosolution.geoapp.core.location.RunUtils.openAppSetting
 import com.geosolution.geoapp.presentation.screens.main.components.LocationPermissionRequestDialog
+import com.mapbox.mapboxsdk.geometry.LatLng
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,6 +34,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
             CampusXTheme(dynamicColor = false, darkTheme = false) {
                 PermissionRequester()
                 MainScreen()
@@ -75,18 +81,6 @@ class MainActivity : ComponentActivity() {
 
                 else -> permissionLauncher.launch(RunUtils.allPermissions)
             }
-        }
-    }
-
-    @Deprecated("This method has been deprecated in favor of using the Activity Result API\n      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt\n      contracts for common intents available in\n      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for\n      testing, and allow receiving results in separate, testable classes independent from your\n      activity. Use\n      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}\n      with the appropriate {@link ActivityResultContract} and handling the result in the\n      {@link ActivityResultCallback#onActivityResult(Object) callback}.")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == LocationUtils.LOCATION_ENABLE_REQUEST_CODE && resultCode != Activity.RESULT_OK) {
-            Toast.makeText(
-                this,
-                "Please enable GPS to get proper running statistics.",
-                Toast.LENGTH_LONG
-            ).show()
         }
     }
 }

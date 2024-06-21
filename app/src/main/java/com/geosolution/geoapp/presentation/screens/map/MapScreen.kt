@@ -80,7 +80,7 @@ fun MapScreen(
             // Bottom-End button
             ButtonAction(
                 icon = ImageVector.vectorResource(id = R.drawable.ic_location),
-                modifier = Modifier.padding(end = 5.dp).align(Alignment.End),
+                modifier = Modifier.padding(end = 5.dp, bottom = 5.dp).align(Alignment.End),
                 onButtonClick = {
                     navController.navigate(NavScreen.HomeScreen.route)
                 }

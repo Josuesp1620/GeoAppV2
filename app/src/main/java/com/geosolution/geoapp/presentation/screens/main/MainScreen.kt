@@ -16,7 +16,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.geosolution.geoapp.core.location.LocationUtils
-import com.geosolution.geoapp.presentation.screens.main.components.LocationStatus
 import com.geosolution.geoapp.presentation.screens.main.components.NetworkStatus
 import com.geosolution.geoapp.presentation.screens.main.viewmodel.MainViewModel
 import com.geosolution.geoapp.presentation.screens.navigations.Navigation
@@ -30,12 +29,6 @@ fun MainScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    val context = LocalContext.current
-
-    LaunchedEffect(key1 = true) {
-        LocationUtils.checkAndRequestLocationSetting(context as Activity)
-    }
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
@@ -43,14 +36,11 @@ fun MainScreen(
     ) { paddingValues ->
         Navigation(
             authState = state.authState,
+            networkState = state.networkState,
             navigationController = navigationController,
         )
         NetworkStatus(
             stateProvider = { state.networkState },
-            modifier = Modifier.padding(paddingValues = paddingValues)
-        )
-        LocationStatus(
-            stateProvider = { state.locationState },
             modifier = Modifier.padding(paddingValues = paddingValues)
         )
     }
