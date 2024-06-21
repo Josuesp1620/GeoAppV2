@@ -1,125 +1,99 @@
 package com.geosolution.geoapp.core.location
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.Service
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
+import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.LifecycleService
 import com.geosolution.geoapp.R
-import com.geosolution.geoapp.domain.model.LocationCurrent
-import com.geosolution.geoapp.domain.use_case.CacheLocationCurrentUseCase
-import com.google.android.gms.location.LocationServices
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import javax.inject.Inject
-@AndroidEntryPoint
-class LocationService : Service() {
+import com.geosolution.geolocation.GeoLocation
+import com.geosolution.geolocation.GeoLocationResult
 
-    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    private lateinit var locationClient: LocationClient
+class LocationService : LifecycleService() {
 
-    @Inject
-    lateinit var cacheLocationCurrentUseCase: CacheLocationCurrentUseCase
+    companion object {
+        const val NOTIFICATION_ID = 787
+        const val STOP_SERVICE_BROADCAST_ACTON =
+            "com.geosolution.geoapp.core.location.ServiceStopBroadcastReceiver"
+    }
 
-    override fun onBind(p0: Intent?): IBinder? {
+    override fun onBind(intent: Intent): IBinder? {
+        super.onBind(intent)
         return null
     }
 
-    override fun onCreate() {
-        super.onCreate()
-        locationClient = DefaultLocationClient(
-            applicationContext,
-            LocationServices.getFusedLocationProviderClient(applicationContext)
-        )
-        createNotificationChannel()
+    private val manager: NotificationManager by lazy {
+        getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
+            ?: throw Exception("No notification manager found")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        when (intent?.action) {
-            ACTION_START -> start()
-            ACTION_STOP -> stop()
-        }
-        return START_NOT_STICKY
+        super.onStartCommand(intent, flags, startId)
+        Log.e("BIRJU", "Temp Service started")
+        Handler(Looper.getMainLooper()).postDelayed({
+            start()
+        }, 2000)
+        return START_STICKY
     }
 
     private fun start() {
-        val notification = NotificationCompat.Builder(this, "location")
-            .setContentTitle("Tracking location...")
-            .setContentText("Location: null")
-            .setSmallIcon(R.drawable.ic_launcher_background)
-            .setOngoing(true)
-            .build()
-
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        locationClient.getLocationUpdates(10000L)
-            .catch { e -> e.printStackTrace() }
-            .onEach { location ->
-                val lat = location.latitude
-                val long = location.longitude
-                val updatedNotification = NotificationCompat.Builder(this, "location")
-                    .setContentTitle("Tracking location...")
-                    .setContentText("Location: ($lat, $long)")
-                    .setSmallIcon(R.drawable.ic_launcher_background)
-                    .setOngoing(true)
-                    .build()
-                notificationManager.notify(1, updatedNotification)
-
-                // Guardar la ubicación en DataStore
-                serviceScope.launch {
-                    cacheLocationCurrentUseCase(LocationCurrent(lat.toString(), long.toString(), "true"))
-                }
-            }
-            .launchIn(serviceScope)
-
-        startForeground(1, notification)
-    }
-
-    private fun stop() {
-        serviceScope.launch {
-            cacheLocationCurrentUseCase(LocationCurrent(null, null, "false"))
+        startForeground(NOTIFICATION_ID, getNotification())
+        GeoLocation.configure {
+            enableBackgroundUpdates = true
         }
-        stopForeground(STOP_FOREGROUND_REMOVE)
-        stopSelf()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        serviceScope.launch {
-            cacheLocationCurrentUseCase(LocationCurrent(null, null, "false"))
+        GeoLocation.startLocationUpdates(this).observe(this) { result ->
+            manager.notify(NOTIFICATION_ID, getNotification(result))
         }
-        serviceScope.cancel()
     }
 
-
-    private fun createNotificationChannel() {
+    private fun getNotification(result: GeoLocationResult? = null): Notification {
+        val manager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
+                ?: throw Exception("No notification manager found")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                "location",
-                "Location Tracking",
-                NotificationManager.IMPORTANCE_LOW
-            ).apply {
-                description = "This channel is used for location tracking"
-            }
-
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+            manager.createNotificationChannel(
+                NotificationChannel(
+                    "location",
+                    "Location Updates",
+                    NotificationManager.IMPORTANCE_DEFAULT
+                )
+            )
         }
-    }
-
-    companion object {
-        const val ACTION_START = "ACTION_START"
-        const val ACTION_STOP = "ACTION_STOP"
+        return with(NotificationCompat.Builder(this, "location")) {
+            setContentTitle("Location Service")
+            result?.apply {
+                location?.let {
+                    setContentText("${it.latitude}, ${it.longitude} - Bearing: ${it.bearing.toInt()}°")
+                } ?: setContentText("Error: ${error?.message}")
+            } ?: setContentText("Trying to get location updates")
+            setSmallIcon(R.drawable.ic_location)
+            setAutoCancel(false)
+            setOnlyAlertOnce(true)
+            val flags =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+                else PendingIntent.FLAG_UPDATE_CURRENT
+            addAction(
+                0,
+                "Stop Updates",
+                PendingIntent.getBroadcast(
+                    this@LocationService,
+                    0,
+                    Intent(this@LocationService, ServiceStopBroadcastReceiver::class.java).apply {
+                        action = STOP_SERVICE_BROADCAST_ACTON
+                    },
+                    flags
+                )
+            )
+            build()
+        }
     }
 }

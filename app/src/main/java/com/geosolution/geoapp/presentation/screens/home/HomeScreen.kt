@@ -1,6 +1,7 @@
 package com.geosolution.geoapp.presentation.screens.home
 
 import android.app.Activity
+import android.content.Intent
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -38,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
+import com.geosolution.geoapp.core.location.LocationService
 import com.geosolution.geoapp.presentation.common.connectivity.NetworkTracker
 import com.geosolution.geoapp.presentation.screens.home.components.CurrentNumberOfTasks
 import com.geosolution.geoapp.presentation.screens.home.components.NoAccessDisplay
@@ -51,8 +53,8 @@ import com.geosolution.geoapp.presentation.screens.navigations.NavScreen
 import com.geosolution.geoapp.presentation.ui.theme.AppColor
 import com.geosolution.geoapp.presentation.ui.theme.CampusXTheme
 import com.geosolution.geoapp.presentation.ui.theme.PrimaryColor
-
-
+import com.geosolution.geolocation.GeoLocation
+import com.huawei.hms.framework.common.ContextCompat.startService
 
 
 @Composable
@@ -60,9 +62,9 @@ fun HomeScreen(
 //    networkState: () -> NetworkTracker.State,
 
 ) {
-//    val viewModel: HomeViewModel = hiltViewModel()
+    val viewModel: HomeViewModel = hiltViewModel()
 //    val navController = rememberNavController()
-//    val state by viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
 
@@ -123,9 +125,15 @@ fun HomeScreen(
                             .align(Alignment.CenterVertically)
                     ) {
                         Switch(
-                            checked = true, // Aquí debes colocar el valor correcto según tu lógica
+                            checked = state.isLocationCurrent,
                             onCheckedChange = { checked ->
-                                // Aquí va la lógica para manejar el cambio de estado del Switch
+                                if (checked) {
+                                    val intent = Intent(context, LocationService::class.java)
+                                    context.startService(intent)
+                                } else {
+                                    GeoLocation.stopLocationUpdates()
+                                }
+                                viewModel.updateLocationCurrentState(checked)
                             }
                         )
                     }
@@ -144,13 +152,13 @@ fun HomeScreen(
             ) {
 
                 UserLocation("Pueblo Libre, Lima, Peru")
-                WeatherInfo(
-                    precipitation = 10.0,
-                    temperature = 10.0,
-                    weatherIcon = 1,
-                    weatherType = "lluvia",
-                    humidity = 10.0
-                )
+//                WeatherInfo(
+//                    precipitation = 10.0,
+//                    temperature = 10.0,
+//                    weatherIcon = 1,
+//                    weatherType = "lluvia",
+//                    humidity = 10.0
+//                )
 
 //                    when (network_state) {
 //                        is NetworkTracker.Unavailable -> {

@@ -62,6 +62,7 @@ dependencies {
     // Dagger Hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
+    implementation(libs.androidx.lifecycle.service)
 
     ksp(libs.dagger.compiler)
     ksp(libs.hilt.compiler)
@@ -89,6 +90,8 @@ dependencies {
     // Play Services GMS
     implementation(libs.play.services.basement)
     implementation(libs.play.services.location)
+    implementation(libs.huawei.hms.location)
+
 
     // MapLibre
     implementation(libs.org.maplibre.gl)

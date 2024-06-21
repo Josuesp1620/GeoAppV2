@@ -15,7 +15,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.geosolution.geoapp.core.location.LocationUtils
 import com.geosolution.geoapp.presentation.screens.main.components.NetworkStatus
 import com.geosolution.geoapp.presentation.screens.main.viewmodel.MainViewModel
 import com.geosolution.geoapp.presentation.screens.navigations.Navigation

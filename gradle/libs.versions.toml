@@ -16,6 +16,7 @@ maplibreGl= "10.0.2"
 appcompat = "1.7.0"
 material = "1.12.0"
 kotlinPlugin = "1.9.24"
+lifecycleService = "2.8.2"
 
 [libraries]
 # Core KTX
@@ -87,6 +88,7 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 huawei-hms-location = { group = "com.huawei.hms", name = "location", version = "6.12.0.300" }
+androidx-lifecycle-service = { group = "androidx.lifecycle", name = "lifecycle-service", version.ref = "lifecycleService" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
