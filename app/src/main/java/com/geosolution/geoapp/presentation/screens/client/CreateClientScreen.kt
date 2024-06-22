@@ -2,10 +2,12 @@ package com.geosolution.geoapp.presentation.screens.client
 
 import android.util.Log
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
@@ -83,10 +85,29 @@ fun CreateClientScreen(
 
                 AnimatedContent(viewModel.state, label = "") { state ->
                     if(state.loading){
-                        Box(modifier = Modifier.fillMaxSize()
-                            .padding(paddingValues = paddingValues)
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            Arrangement.Center
                         ) {
-                            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                            TextCustom(
+                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                text = "Añadiendo Cliente",
+                                letterSpacing = 2.0,
+                                fontSize = 30.0,
+                                fontWeight = FontWeight(600),
+                                color = MaterialTheme.colorScheme.primary
+                            )
+
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 20.dp, bottom = 20.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator(
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
                         }
                     }
 
