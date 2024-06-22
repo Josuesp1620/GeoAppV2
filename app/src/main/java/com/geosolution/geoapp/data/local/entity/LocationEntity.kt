@@ -4,8 +4,8 @@ import com.geosolution.geoapp.data.local.utils.DatabaseEntity
 import com.geosolution.geoapp.domain.model.Location
 
 data class LocationEntity(
-    val latitude: String?,
-    val longitude: String?,
+    val latitude: String,
+    val longitude: String,
 ): DatabaseEntity {
     override fun asDomain(): Location = Location(
         latitude= latitude,

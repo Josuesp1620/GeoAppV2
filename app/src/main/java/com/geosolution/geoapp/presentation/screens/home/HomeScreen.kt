@@ -20,14 +20,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.geosolution.geoapp.presentation.screens.home.components.EmptyListView
 import com.geosolution.geoapp.presentation.screens.home.components.TopBarHomeScreen
+import com.geosolution.geoapp.presentation.screens.home.viewmodel.HomeViewModel
 import com.geosolution.geoapp.presentation.screens.navigations.NavScreen
 
 @Composable
 fun HomeScreen(
     navController: NavController,
+    homeViewModel: HomeViewModel = hiltViewModel()
 ) {
 
     Scaffold(
@@ -46,6 +49,7 @@ fun HomeScreen(
     ) { paddingValues ->
 
         HomeScreenContent(
+            homeViewModel = homeViewModel,
             navController = navController,
             modifier = Modifier.padding(paddingValues)
         )
@@ -56,6 +60,7 @@ fun HomeScreen(
 
 @Composable
 fun HomeScreenContent(
+    homeViewModel: HomeViewModel,
     navController: NavController,
     modifier: Modifier,
     bottomPadding: Dp = 0.dp,
@@ -64,6 +69,7 @@ fun HomeScreenContent(
         modifier
     ) {
         TopBarHomeScreen(
+            homeViewModel = homeViewModel,
             navController = navController,
             modifier = Modifier
                 .zIndex(1f),

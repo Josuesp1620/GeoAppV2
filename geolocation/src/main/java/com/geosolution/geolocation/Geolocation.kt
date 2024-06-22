@@ -114,59 +114,59 @@ object GeoLocation {
         return locationLiveData
     }
 
-    /**
-     * Starts location updates by verifying permissions and location settings.
-     * This overloaded method is intended to be called from fragments, and they have access
-     * to [Context] and they are [LifecycleOwner]. Instead of returning a [LiveData] instance,
-     * it takes in a lambda block which will be invoked on [LiveData] events.
-     *
-     * This method internally handles runtime location permission which is needed
-     * for Android M and above. It also handles rationale dialogs and permission
-     * blocked dialogs also. These dialogs can be configured using [configure] method.
-     * It also handles location resolution process for requested location settings.
-     * It shows setting resolution dialog if needed and ask for user's permission to
-     * change location settings.
-     *
-     * @param fragment Fragment from which this method is called
-     * @param onResult Lambda block which is called upon receiving updates on [LiveData]
-     */
-    @Throws(IllegalStateException::class)
-    fun startLocationUpdates(
-        fragment: Fragment,
-        onResult: (GeoLocationResult) -> Unit,
-    ) {
-        assertMainThread("startLocationUpdates")
-        locationLiveData.observe(fragment, Observer(onResult))
-        startLocationUpdates(fragment.requireContext().applicationContext)
-    }
-
-    /**
-     * Starts location updates by verifying permissions and location settings.
-     * This overloaded method is intended to be called from the components which is ContextWrapper
-     * and also implements [LifecycleOwner] interface.
-     * e.g. Activities, LifecycleService, Application
-     * Instead of returning a [LiveData] instance, it takes in a lambda block which will be
-     * invoked on [LiveData] events.
-     *
-     * This method internally handles runtime location permission which is needed
-     * for Android M and above. It also handles rationale dialogs and permission
-     * blocked dialogs also. These dialogs can be configured using [configure] method.
-     * It also handles location resolution process for requested location settings.
-     * It shows setting resolution dialog if needed and ask for user's permission to
-     * change location settings.
-     *
-     * @param lifecycleOwnerContext Instance of a class which itself is [Context] and implements [LifecycleOwner]
-     * @param onResult Lambda block which is called upon receiving updates on [LiveData]
-     */
-    @Throws(IllegalStateException::class)
-    fun <T> startLocationUpdates(
-        lifecycleOwnerContext: T,
-        onResult: (GeoLocationResult) -> Unit,
-    ) where T : Context, T : LifecycleOwner {
-        assertMainThread("startLocationUpdates")
-        locationLiveData.observe(lifecycleOwnerContext, Observer(onResult))
-        startLocationUpdates(lifecycleOwnerContext.applicationContext)
-    }
+//    /**
+//     * Starts location updates by verifying permissions and location settings.
+//     * This overloaded method is intended to be called from fragments, and they have access
+//     * to [Context] and they are [LifecycleOwner]. Instead of returning a [LiveData] instance,
+//     * it takes in a lambda block which will be invoked on [LiveData] events.
+//     *
+//     * This method internally handles runtime location permission which is needed
+//     * for Android M and above. It also handles rationale dialogs and permission
+//     * blocked dialogs also. These dialogs can be configured using [configure] method.
+//     * It also handles location resolution process for requested location settings.
+//     * It shows setting resolution dialog if needed and ask for user's permission to
+//     * change location settings.
+//     *
+//     * @param fragment Fragment from which this method is called
+//     * @param onResult Lambda block which is called upon receiving updates on [LiveData]
+//     */
+//    @Throws(IllegalStateException::class)
+//    fun startLocationUpdates(
+//        fragment: Fragment,
+//        onResult: (GeoLocationResult) -> Unit,
+//    ) {
+//        assertMainThread("startLocationUpdates")
+//        locationLiveData.observe(fragment, Observer(onResult))
+//        startLocationUpdates(fragment.requireContext().applicationContext)
+//    }
+//
+//    /**
+//     * Starts location updates by verifying permissions and location settings.
+//     * This overloaded method is intended to be called from the components which is ContextWrapper
+//     * and also implements [LifecycleOwner] interface.
+//     * e.g. Activities, LifecycleService, Application
+//     * Instead of returning a [LiveData] instance, it takes in a lambda block which will be
+//     * invoked on [LiveData] events.
+//     *
+//     * This method internally handles runtime location permission which is needed
+//     * for Android M and above. It also handles rationale dialogs and permission
+//     * blocked dialogs also. These dialogs can be configured using [configure] method.
+//     * It also handles location resolution process for requested location settings.
+//     * It shows setting resolution dialog if needed and ask for user's permission to
+//     * change location settings.
+//     *
+//     * @param lifecycleOwnerContext Instance of a class which itself is [Context] and implements [LifecycleOwner]
+//     * @param onResult Lambda block which is called upon receiving updates on [LiveData]
+//     */
+//    @Throws(IllegalStateException::class)
+//    fun <T> startLocationUpdates(
+//        lifecycleOwnerContext: T,
+//        onResult: (GeoLocationResult) -> Unit,
+//    ) where T : Context, T : LifecycleOwner {
+//        assertMainThread("startLocationUpdates")
+//        locationLiveData.observe(lifecycleOwnerContext, Observer(onResult))
+//        startLocationUpdates(lifecycleOwnerContext.applicationContext)
+//    }
 
     /**
      * Checks if the method call is performed on main thread or not. throws exception if not on main thread

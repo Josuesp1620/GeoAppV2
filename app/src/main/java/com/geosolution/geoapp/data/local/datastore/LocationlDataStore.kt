@@ -12,7 +12,7 @@ class LocationlDataStore(
     private val dataStore: DataStore<Preferences>
 ) {
 
-    suspend fun save(locationCurrent: LocationEntity) {
+    suspend fun locationSaveCache(locationCurrent: LocationEntity) {
         dataStore.edit { pref ->
             pref[KeyLocationCurrentLatitude] = locationCurrent.latitude.toString()
             pref[KeyLocationCurrentLongitude] = locationCurrent.longitude.toString()
@@ -20,7 +20,7 @@ class LocationlDataStore(
 
     }
 
-    fun getLocationCurrent(): Flow<LocationEntity?> {
+    fun locationGetCache(): Flow<LocationEntity?> {
 
         return dataStore.data.map { pref ->
             val latitude = pref[KeyLocationCurrentLatitude] ?: return@map null
@@ -32,8 +32,11 @@ class LocationlDataStore(
         }
     }
 
-    suspend fun clear() {
-        dataStore.edit { it.clear() }
+    suspend fun locationDeleteCache() {
+        dataStore.edit { preferences ->
+            preferences.remove(KeyLocationCurrentLatitude)
+            preferences.remove(KeyLocationCurrentLongitude)
+        }
     }
 
     companion object {

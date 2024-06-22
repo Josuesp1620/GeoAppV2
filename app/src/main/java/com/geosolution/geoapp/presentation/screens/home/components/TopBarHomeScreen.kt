@@ -32,11 +32,13 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.geosolution.geoapp.R
+import com.geosolution.geoapp.presentation.screens.home.viewmodel.HomeViewModel
 import com.geosolution.geoapp.presentation.screens.navigations.NavScreen
 
 
 @Composable
 fun TopBarHomeScreen(
+    homeViewModel: HomeViewModel,
     navController: NavController,
     modifier: Modifier = Modifier,
 //    user: User,
@@ -62,7 +64,7 @@ fun TopBarHomeScreen(
 //                user = user
             )
             Spacer(modifier = Modifier.size(32.dp))
-            LocationInfoCard()
+            LocationInfoCard(homeViewModel)
         }
     }
 

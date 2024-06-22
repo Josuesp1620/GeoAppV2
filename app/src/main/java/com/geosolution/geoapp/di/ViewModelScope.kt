@@ -11,6 +11,7 @@ import com.geosolution.geoapp.domain.use_case.auth.AuthSignUpUseCase
 import com.geosolution.geoapp.domain.use_case.client.ClientCreateStoreUseCase
 import com.geosolution.geoapp.domain.use_case.client.ClientGetAllStoreUseCase
 import com.geosolution.geoapp.domain.use_case.client.ClientGetByIdStoreUseCase
+import com.geosolution.geoapp.domain.use_case.location.LocationDeleteCacheUseCase
 import com.geosolution.geoapp.domain.use_case.location.LocationGetCacheUseCase
 import com.geosolution.geoapp.domain.use_case.location.LocationSaveCacheUseCase
 import com.geosolution.geoapp.domain.use_case.user.UserGetStoreUseCase
@@ -77,6 +78,12 @@ object ViewModelScope {
     @ViewModelScoped
     fun provideLocationSaveCacheUseCase(locationRepository: LocationRepository): LocationSaveCacheUseCase {
         return LocationSaveCacheUseCase(locationRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideLocationDeleteCacheUseCase(locationRepository: LocationRepository): LocationDeleteCacheUseCase {
+        return LocationDeleteCacheUseCase(locationRepository)
     }
 
     @Provides

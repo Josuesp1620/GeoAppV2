@@ -11,7 +11,8 @@ import javax.inject.Inject
 class LocationRepositoryImpl @Inject constructor(
     private val dataStore: LocationlDataStore
 ) : LocationRepository {
-    override suspend fun locationSaveCache(location: Location)  = dataStore.save(location.asDatabaseEntity())
+    override suspend fun locationSaveCache(location: Location)  = dataStore.locationSaveCache(location.asDatabaseEntity())
 
-    override fun locationGetCache(): Flow<Location?>  = dataStore.getLocationCurrent().map { it?.asDomain() }
+    override fun locationGetCache(): Flow<Location?>  = dataStore.locationGetCache().map { it?.asDomain() }
+    override suspend fun deleteLocationCache() = dataStore.locationDeleteCache()
 }

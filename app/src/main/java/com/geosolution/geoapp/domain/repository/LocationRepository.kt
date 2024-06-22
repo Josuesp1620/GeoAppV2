@@ -7,4 +7,7 @@ interface LocationRepository {
     suspend fun locationSaveCache(location: Location)
 
     fun locationGetCache() : Flow<Location?>
+
+    suspend fun deleteLocationCache()
+
 }

@@ -31,24 +31,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.geosolution.geoapp.core.location.LocationService
 import com.geosolution.geoapp.presentation.screens.home.viewmodel.HomeViewModel
 
-@Composable
-@Preview(showSystemUi = true)
-fun LocationInfoCardComposable(
-    modifier: Modifier = Modifier,
-) {
-    LocationInfoCard()
-}
+
 @Composable
 fun LocationInfoCard(
+    homeViewModel: HomeViewModel,
     modifier: Modifier = Modifier,
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
-//    val navController = rememberNavController()
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
-
-    var isLocationCurrent by rememberSaveable { mutableStateOf(state.isLocationCurrent) }
 
 
     ElevatedCard(
@@ -64,7 +57,7 @@ fun LocationInfoCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end=24.dp)
+                    .padding(end = 24.dp)
                 ,
                 horizontalArrangement = Arrangement.SpaceBetween,
 
@@ -77,15 +70,9 @@ fun LocationInfoCard(
                     ),
                 )
                 Switch(
-                    checked = isLocationCurrent,
+                    checked = state.isLocationCurrent,
                     onCheckedChange = { checked ->
-                        isLocationCurrent = checked
-                        viewModel.updateLocationCurrentState(checked)
-                        context.startService(
-                            Intent(context, LocationService::class.java).apply {
-                                action = if (checked) LocationService.ACTION_START else LocationService.ACTION_STOP
-                            }
-                        )
+                        homeViewModel.activeLocation(checked)
                     }
                 )
             }
@@ -101,7 +88,7 @@ fun LocationInfoCard(
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = "Latitud: -12.061901\nLongitud: -77.057229",
+                    text = "Latitud: ${state.location?.latitude ?: "unknown"}\nLongitud: ${state.location?.longitude ?: "unknown"}",
                     modifier = Modifier
                         .weight(1f),
                     style = MaterialTheme.typography.bodySmall.copy(
@@ -109,7 +96,7 @@ fun LocationInfoCard(
                     )
                 )
                 Text(
-                    text = "Bearing: 65°",
+                    text = "Bearing: ${state.location?.bearing?.toInt() ?: "unknown"}",
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -118,7 +105,7 @@ fun LocationInfoCard(
             Spacer(
                 modifier = Modifier.size(8.dp)
             )
-            if(state.isLocationCurrent){
+            if(state.isLocationCurrent && state.location == null){
                 LinearProgressIndicator(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -127,6 +114,8 @@ fun LocationInfoCard(
                     trackColor = MaterialTheme.colorScheme.surfaceVariant,
                     strokeCap = StrokeCap.Round,
                 )
+            }else{
+                Spacer(modifier = Modifier.height(8.dp))
             }
 
         }
