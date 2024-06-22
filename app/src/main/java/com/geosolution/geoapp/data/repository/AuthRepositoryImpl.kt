@@ -1,6 +1,5 @@
 package com.geosolution.geoapp.data.repository
 
-import android.util.Log
 import com.geosolution.geoapp.core.constants.Status.SUCCESS
 import com.geosolution.geoapp.core.constants.Status.SUCCESS_CREATE
 import com.geosolution.geoapp.core.utils.Action
@@ -27,8 +26,6 @@ class AuthRepositoryImpl @Inject constructor(
         emit(Action.Loading())
         val response = authService.authSignIn(signInRequest)
 
-        Log.d("AuthRepositoryImpl", response.data.toString())
-
         when(response.code) {
             SUCCESS -> emit(Action.Success(data = response.data?.asDomain()))
         }
@@ -47,7 +44,10 @@ class AuthRepositoryImpl @Inject constructor(
         emit(it.toAction())
     }
 
-    override suspend fun saveAuthCache(auth: Auth) = authLocalDataStore.save(auth.asDatabaseEntity())
+    override suspend fun authSaveCache(auth: Auth) {
+        authLocalDataStore.authSaveCache(auth.asDatabaseEntity())
+    }
 
-    override suspend fun getAuthCache() : Flow<Auth?> = authLocalDataStore.getAuth().map { it?.asDomain() }
+    override fun authGetCache(): Flow<Auth?> = authLocalDataStore.authGetCache().map { it?.asDomain() }
+
 }

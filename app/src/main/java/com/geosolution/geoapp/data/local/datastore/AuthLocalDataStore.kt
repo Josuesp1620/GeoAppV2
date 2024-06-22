@@ -13,7 +13,7 @@ import kotlinx.serialization.json.Json
 class AuthLocalDataStore(
     private val dataStore: DataStore<Preferences>
 ) {
-    suspend fun save(auth: AuthEntity) {
+    suspend fun authSaveCache(auth: AuthEntity) {
         dataStore.edit { pref ->
             pref[KeyAccessToken] = auth.accessToken.toString()
             pref[KeyRefreshToken] = auth.refreshToken.toString()
@@ -21,7 +21,7 @@ class AuthLocalDataStore(
 
     }
 
-    fun getAuth(): Flow<AuthEntity?> {
+    fun authGetCache(): Flow<AuthEntity?> {
 
         return dataStore.data.map { pref ->
             AuthEntity(
@@ -31,13 +31,12 @@ class AuthLocalDataStore(
         }
     }
 
-    suspend fun clear() {
+    suspend fun authDeleteCache() {
         dataStore.edit { it.clear() }
     }
 
     companion object {
         private val KeyAccessToken = stringPreferencesKey("access_token")
         private val KeyRefreshToken = stringPreferencesKey("refresh_token")
-        private val KeyProfile = stringPreferencesKey("profile")
     }
 }

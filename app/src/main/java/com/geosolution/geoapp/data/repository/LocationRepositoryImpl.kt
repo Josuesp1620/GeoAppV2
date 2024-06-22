@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class LocationRepositoryImpl @Inject constructor(
-    private val locationCurrentLocalDataStore: LocationCurrentLocalDataStore
+    private val dataStore: LocationCurrentLocalDataStore
 ) : LocationRepository {
-    override suspend fun saveLocationCurrentCache(locationCurrent: Location) = locationCurrentLocalDataStore.save(locationCurrent.asDatabaseEntity())
+    override suspend fun locationSaveCache(location: Location)  = dataStore.save(location.asDatabaseEntity())
 
-    override suspend fun getLocationCurrentCache() : Flow<Location?> = locationCurrentLocalDataStore.getLocationCurrent().map { it?.asDomain() }
+    override fun locationGetCache(): Flow<Location?>  = dataStore.getLocationCurrent().map { it?.asDomain() }
 }

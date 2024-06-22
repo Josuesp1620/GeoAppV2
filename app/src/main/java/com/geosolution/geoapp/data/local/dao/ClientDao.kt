@@ -10,12 +10,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ClientDao {
     @Query("SELECT * FROM client")
-    fun clientGetAllStore(): Flow<List<ClientEntity>?>
+    fun clientGetAllStore(): Flow<List<ClientEntity>>
 
     @Query("SELECT * FROM client WHERE id = :id")
-    fun clientGetByIdStore(id: Int): Flow<ClientEntity?>
+    fun clientGetByIdStore(id: String): Flow<ClientEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun clientSaveStore(client: ClientEntity)
-
 }
