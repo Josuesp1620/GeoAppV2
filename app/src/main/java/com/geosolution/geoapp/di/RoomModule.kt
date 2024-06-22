@@ -3,10 +3,11 @@ package com.geosolution.geoapp.di
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
-import com.geosolution.geoapp.data.local.datastore.AuthLocalDataStore
+import com.geosolution.geoapp.data.local.dao.ClientDao
+import com.geosolution.geoapp.data.local.datastore.AuthDataStore
 import com.geosolution.geoapp.data.local.dao.UserDao
 import com.geosolution.geoapp.data.local.database.Database
-import com.geosolution.geoapp.data.local.datastore.LocationCurrentLocalDataStore
+import com.geosolution.geoapp.data.local.datastore.LocationlDataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,24 +21,12 @@ object RoomModule {
 
     @Provides
     @Singleton
-    fun provideAuthLocalDataStore(@ApplicationContext context: Context): AuthLocalDataStore {
-        return AuthLocalDataStore(dataStore = context.authStore)
-    }
-
-    @Provides
-    @Singleton
-    fun provideLocationCurrentLocalDataStore(@ApplicationContext context: Context): LocationCurrentLocalDataStore {
-        return LocationCurrentLocalDataStore(dataStore = context.locationCurrentStore)
-    }
-
-    @Provides
-    @Singleton
     fun provideDatabase(
         @ApplicationContext applicationContext: Context
     ): Database = Room.databaseBuilder(
         context = applicationContext,
         klass = Database::class.java,
-        name = "uniHubSocialDataBase"
+        name = "GeoAppDataBase"
     ).build()
 
     @Provides
@@ -45,10 +34,10 @@ object RoomModule {
     fun provideUserDao(database: Database) : UserDao {
         return database.userDao
     }
+    @Provides
+    @Singleton
+    fun provideClientDao(database: Database) : ClientDao {
+        return database.clientDao
+    }
+
 }
-
-
-private val Context.authStore by preferencesDataStore("auth")
-
-private val Context.locationCurrentStore by preferencesDataStore("location_current")
-

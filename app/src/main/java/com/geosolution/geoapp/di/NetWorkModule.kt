@@ -1,7 +1,6 @@
 package com.geosolution.geoapp.di
 
 import android.content.Context
-import com.geosolution.geoapp.data.common.HttpClient
 import com.geosolution.geoapp.presentation.common.connectivity.NetworkTracker
 import com.geosolution.geoapp.presentation.common.connectivity.NetworkTrackerImpl
 import dagger.Module

@@ -1,12 +1,19 @@
 package com.geosolution.geoapp.di
 
-import com.geosolution.geoapp.data.local.datastore.AuthLocalDataStore
-import com.geosolution.geoapp.data.local.datastore.LocationCurrentLocalDataStore
+import com.geosolution.geoapp.data.local.dao.ClientDao
+import com.geosolution.geoapp.data.local.dao.UserDao
+import com.geosolution.geoapp.data.local.database.Database
+import com.geosolution.geoapp.data.local.datastore.AuthDataStore
+import com.geosolution.geoapp.data.local.datastore.LocationlDataStore
 import com.geosolution.geoapp.data.remote.api.auth.AuthService
 import com.geosolution.geoapp.data.repository.AuthRepositoryImpl
+import com.geosolution.geoapp.data.repository.ClientRepositoryImpl
 import com.geosolution.geoapp.data.repository.LocationRepositoryImpl
+import com.geosolution.geoapp.data.repository.UserRepositoryImpl
 import com.geosolution.geoapp.domain.repository.AuthRepository
+import com.geosolution.geoapp.domain.repository.ClientRepositoy
 import com.geosolution.geoapp.domain.repository.LocationRepository
+import com.geosolution.geoapp.domain.repository.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,17 +28,35 @@ object RepositoryModule {
     @Singleton
     fun provideAuthRepository(
         authService: AuthService,
-        authLocalDataStore: AuthLocalDataStore
+        authDataStore: AuthDataStore
     ): AuthRepository = AuthRepositoryImpl(
-        authService = authService,
-        authLocalDataStore = authLocalDataStore
+        service = authService,
+        dataStore = authDataStore
     )
 
     @Provides
     @Singleton
-    fun provideLocationCurrentRepository(
-        locationCurrentLocalDataStore: LocationCurrentLocalDataStore
+    fun provideLocationRepository(
+        locationDataStore: LocationlDataStore
     ): LocationRepository = LocationRepositoryImpl(
-        locationCurrentLocalDataStore = locationCurrentLocalDataStore
+        dataStore = locationDataStore
     )
+
+    @Provides
+    @Singleton
+    fun provideClientRepository(
+        dataBase: Database
+    ): ClientRepositoy = ClientRepositoryImpl(
+        dataBase = dataBase.clientDao
+    )
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(
+        dataBase: Database
+    ): UserRepository = UserRepositoryImpl(
+        dataBase = dataBase.userDao
+    )
+
+
 }

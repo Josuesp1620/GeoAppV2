@@ -7,10 +7,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.geosolution.geoapp.data.local.entity.AuthEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
-class AuthLocalDataStore(
+class AuthDataStore(
     private val dataStore: DataStore<Preferences>
 ) {
     suspend fun authSaveCache(auth: AuthEntity) {

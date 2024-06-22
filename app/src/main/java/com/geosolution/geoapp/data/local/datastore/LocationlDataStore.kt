@@ -8,7 +8,7 @@ import com.geosolution.geoapp.data.local.entity.LocationEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class LocationCurrentLocalDataStore(
+class LocationlDataStore(
     private val dataStore: DataStore<Preferences>
 ) {
 

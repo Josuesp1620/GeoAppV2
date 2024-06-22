@@ -1,7 +1,20 @@
 package com.geosolution.geoapp.di
 
 import com.geosolution.geoapp.domain.repository.AuthRepository
+import com.geosolution.geoapp.domain.repository.ClientRepositoy
 import com.geosolution.geoapp.domain.repository.LocationRepository
+import com.geosolution.geoapp.domain.repository.UserRepository
+import com.geosolution.geoapp.domain.use_case.auth.AuthGetCacheUseCase
+import com.geosolution.geoapp.domain.use_case.auth.AuthSaveCacheUseCase
+import com.geosolution.geoapp.domain.use_case.auth.AuthSignInUseCase
+import com.geosolution.geoapp.domain.use_case.auth.AuthSignUpUseCase
+import com.geosolution.geoapp.domain.use_case.client.ClientCreateStoreUseCase
+import com.geosolution.geoapp.domain.use_case.client.ClientGetAllStoreUseCase
+import com.geosolution.geoapp.domain.use_case.client.ClientGetByIdStoreUseCase
+import com.geosolution.geoapp.domain.use_case.location.LocationGetCacheUseCase
+import com.geosolution.geoapp.domain.use_case.location.LocationSaveCacheUseCase
+import com.geosolution.geoapp.domain.use_case.user.UserGetStoreUseCase
+import com.geosolution.geoapp.domain.use_case.user.UserSaveStoreUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,37 +27,68 @@ object ViewModelScope {
 
     @Provides
     @ViewModelScoped
-    fun provideSignInUseCase(authRepository: AuthRepository): SignInUseCase {
-        return SignInUseCase(authRepository)
+    fun provideAuthGetCacheUseCase(authRepository: AuthRepository): AuthGetCacheUseCase {
+        return AuthGetCacheUseCase(authRepository)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideSignUpUseCase(authRepository: AuthRepository): SignUpUseCase {
-        return SignUpUseCase(authRepository)
+    fun provideAuthSaveCacheUseCase(authRepository: AuthRepository): AuthSaveCacheUseCase {
+        return AuthSaveCacheUseCase(authRepository)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideCacheAuthUseCase(authRepository: AuthRepository): CacheAuthUseCase {
-        return CacheAuthUseCase(authRepository)
+    fun provideAuthSignInUseCase(authRepository: AuthRepository): AuthSignInUseCase {
+        return AuthSignInUseCase(authRepository)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideGetCacheAuthUseCase(authRepository: AuthRepository): GetCacheAuthUseCase {
-        return GetCacheAuthUseCase(authRepository)
+    fun provideAuthSignUpUseCase(authRepository: AuthRepository): AuthSignUpUseCase {
+        return AuthSignUpUseCase(authRepository)
     }
 
     @Provides
     @ViewModelScoped
-    fun providesCacheLocationCurrentUseCase(locationRepository: LocationRepository): CacheLocationCurrentUseCase {
-        return CacheLocationCurrentUseCase(locationRepository)
+    fun provideClientCreateStoreUseCase(clientRepository: ClientRepositoy): ClientCreateStoreUseCase {
+        return ClientCreateStoreUseCase(clientRepository)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideGetCacheLocationCurrentUseCase(locationRepository: LocationRepository): GetCacheLocationCurrentUseCase {
-        return GetCacheLocationCurrentUseCase(locationRepository)
+    fun provideClientGetByIdStoreUseCase(clientRepository: ClientRepositoy): ClientGetByIdStoreUseCase {
+        return ClientGetByIdStoreUseCase(clientRepository)
     }
+
+    @Provides
+    @ViewModelScoped
+    fun provideClientGetAllStoreUseCase(clientRepository: ClientRepositoy): ClientGetAllStoreUseCase {
+        return ClientGetAllStoreUseCase(clientRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideLocationGetCacheUseCase(locationRepository: LocationRepository): LocationGetCacheUseCase {
+        return LocationGetCacheUseCase(locationRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideLocationSaveCacheUseCase(locationRepository: LocationRepository): LocationSaveCacheUseCase {
+        return LocationSaveCacheUseCase(locationRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideUserGetStoreUseCase(userRepository: UserRepository): UserGetStoreUseCase {
+        return UserGetStoreUseCase(userRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideUserSaveStoreUseCase(userRepository: UserRepository): UserSaveStoreUseCase {
+        return UserSaveStoreUseCase(userRepository)
+    }
+
 }
