@@ -15,9 +15,8 @@ class AuthLocalDataStore(
 ) {
     suspend fun save(auth: AuthEntity) {
         dataStore.edit { pref ->
-            pref[KeyAccessToken] = auth.accessToken
-            pref[KeyRefreshToken] = auth.refreshToken
-            pref[KeyProfile] = Json.encodeToString(auth.profile)
+            pref[KeyAccessToken] = auth.accessToken.toString()
+            pref[KeyRefreshToken] = auth.refreshToken.toString()
         }
 
     }
@@ -28,7 +27,6 @@ class AuthLocalDataStore(
             AuthEntity(
                 accessToken = pref[KeyAccessToken] ?: return@map null,
                 refreshToken = pref[KeyRefreshToken] ?: return@map null,
-                profile = Json.decodeFromString(pref[KeyProfile] ?: return@map null)
             )
         }
     }
