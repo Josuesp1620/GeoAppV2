@@ -21,8 +21,8 @@ class LocationService : LifecycleService() {
 
     companion object {
         const val NOTIFICATION_ID = 787
-        const val STOP_SERVICE_BROADCAST_ACTON =
-            "com.geosolution.geoapp.core.location.ServiceStopBroadcastReceiver"
+        const val ACTION_START = "ACTION_START"
+        const val ACTION_STOP = "ACTION_STOP"
     }
 
     override fun onBind(intent: Intent): IBinder? {
@@ -38,10 +38,18 @@ class LocationService : LifecycleService() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
         Log.e("BIRJU", "Temp Service started")
-        Handler(Looper.getMainLooper()).postDelayed({
-            start()
-        }, 2000)
-        return START_STICKY
+        when(intent?.action) {
+            ACTION_START -> start()
+            ACTION_STOP -> stop()
+        }
+        return START_NOT_STICKY
+    }
+
+    private fun stop() {
+        GeoLocation.stopLocationUpdates()
+        this@LocationService.stopService(Intent(this@LocationService, LocationService::class.java))
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopSelf()
     }
 
     private fun start() {
@@ -71,28 +79,12 @@ class LocationService : LifecycleService() {
             setContentTitle("Location Service")
             result?.apply {
                 location?.let {
-                    setContentText("Coordinates: ${it.latitude},${it.longitude}\nBearing: ${it.bearing.toInt()}°")
+                    setContentText("Sharing Current Location")
                 } ?: setContentText("Error: ${error?.message}")
             } ?: setContentText("Trying to get location updates")
             setSmallIcon(R.drawable.ic_location)
             setAutoCancel(false)
             setOnlyAlertOnce(true)
-            val flags =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
-                else PendingIntent.FLAG_UPDATE_CURRENT
-            addAction(
-                0,
-                "Stop Updates",
-                PendingIntent.getBroadcast(
-                    this@LocationService,
-                    0,
-                    Intent(this@LocationService, ServiceStopBroadcastReceiver::class.java).apply {
-                        action = STOP_SERVICE_BROADCAST_ACTON
-                    },
-                    flags
-                )
-            )
             build()
         }
     }

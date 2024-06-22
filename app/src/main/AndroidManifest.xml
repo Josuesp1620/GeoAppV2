@@ -33,16 +33,6 @@
             android:name=".core.location.LocationService"
             android:exported="false"
             android:foregroundServiceType="location"/>
-
-        <receiver
-            android:name=".core.location.ServiceStopBroadcastReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.geosolution.geolocation.ServiceStopBroadcastReceiver"/>
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name=".presentation.screens.main.MainActivity"
             android:exported="true"
