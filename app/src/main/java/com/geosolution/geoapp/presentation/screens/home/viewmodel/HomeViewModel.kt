@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.geosolution.geoapp.domain.model.Location
+import com.geosolution.geoapp.domain.use_case.location.LocationGetCacheUseCase
+import com.geosolution.geoapp.domain.use_case.location.LocationSaveCacheUseCase
 import com.geosolution.geoapp.presentation.ui.utils.event.Event
 import com.geosolution.geoapp.presentation.ui.utils.event.ViewModelEvents
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,8 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val cacheLocationCurrentUseCase: CacheLocationCurrentUseCase,
-    private val getCacheLocationCurrentUseCase: GetCacheLocationCurrentUseCase
+    private val locatioSaveCache: LocationSaveCacheUseCase,
+    private val locationGetCache: LocationGetCacheUseCase
 
 ) : ViewModel(), ViewModelEvents<Event> by ViewModelEventsImpl() {
 
@@ -36,10 +38,9 @@ class HomeViewModel @Inject constructor(
 
     private fun loadLocationCurrentState() {
         viewModelScope.launch {
-            getCacheLocationCurrentUseCase().catch { e ->
+            locationGetCache().catch { e ->
                 _state.update { state -> state.copy(snackbar = e.message ?: "") }
             }.collectLatest { location ->
-                Log.d("HomeViewModel", "$location")
                 if (location != null) {
                     _state.update { state -> state.copy(isLocationCurrent = true) }
                 } else {
@@ -55,9 +56,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun updateLocationCurrent(latitude: Double, longitude: Double, state: Boolean) {
+    fun updateLocationCurrent(latitude: Double, longitude: Double) {
         viewModelScope.launch {
-            cacheLocationCurrentUseCase(Location(latitude.toString(),  longitude.toString(), state.toString()))
+            locatioSaveCache(Location(latitude.toString(),  longitude.toString()))
         }
     }
 }

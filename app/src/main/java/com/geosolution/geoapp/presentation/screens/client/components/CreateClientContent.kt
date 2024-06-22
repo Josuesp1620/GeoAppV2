@@ -33,55 +33,102 @@ import com.geosolution.geoapp.presentation.ui.widgets.TextCustom
 fun CreateClientContent(
     viewModel: CreateClientViewModel
 ) {
-    var fullname by rememberSaveable { mutableStateOf("") }
-    var username by rememberSaveable { mutableStateOf("")  }
-    var email by rememberSaveable { mutableStateOf("") }
+    var fullName by rememberSaveable { mutableStateOf("") }
+    var name by rememberSaveable { mutableStateOf("")  }
+    var vat by rememberSaveable { mutableStateOf("") }
+    var businessName by rememberSaveable { mutableStateOf("") }
+    var address by rememberSaveable { mutableStateOf("") }
+    var coordinates by rememberSaveable { mutableStateOf("") }
 
     Column(
     ) {
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = fullname,
+            value = name,
             leadingIcon = {
                 Icon(imageVector = Icons.Default.AccountBox, contentDescription = "account-box-icon")
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             onValueChange = {
-                fullname = it
+                name = it
             },
-            label = { Text(text = "Nombre Completo") },
-            placeholder = { Text(text = "Nombre Completo") },
+            label = { Text(text = "Nombres") },
+            placeholder = { Text(text = "Nombres") },
         )
 
         Spacer(modifier = Modifier.height(25.dp))
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = username,
+            value = fullName,
             leadingIcon = {
                 Icon(imageVector = Icons.Default.Face, contentDescription = "face-icon")
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             onValueChange = {
-                username = it
+                fullName = it
             },
-            label = { Text(text = "Usuario") },
-            placeholder = { Text(text = "Usuario") },
+            label = { Text(text = "Apellidos") },
+            placeholder = { Text(text = "Apellidos") },
         )
 
         Spacer(modifier = Modifier.height(25.dp))
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = email,
+            value = vat,
             leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "email-icon") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             onValueChange = {
-                email = it
+                vat = it
             },
-            label = { Text(text = "Correo electronico") },
-            placeholder = { Text(text = "Correo electronico") },
+            label = { Text(text = "DNI / RUC") },
+            placeholder = { Text(text = "DNI / RUC") },
+        )
+
+        Spacer(modifier = Modifier.height(25.dp))
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = businessName,
+            leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "email-icon") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            onValueChange = {
+                businessName = it
+            },
+            label = { Text(text = "Nombre Comercial") },
+            placeholder = { Text(text = "Nombre Comercial") },
+        )
+
+
+        Spacer(modifier = Modifier.height(25.dp))
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = address,
+            leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "email-icon") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            onValueChange = {
+                address = it
+            },
+            label = { Text(text = "Dirección") },
+            placeholder = { Text(text = "Dirección") },
+        )
+
+
+        Spacer(modifier = Modifier.height(25.dp))
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = coordinates,
+            leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "email-icon") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            onValueChange = {
+                coordinates = it
+            },
+            label = { Text(text = "Coordenadas") },
+            placeholder = { Text(text = "LAT - LONG") },
         )
 
         Spacer(modifier = Modifier.height(25.dp))
@@ -93,7 +140,7 @@ fun CreateClientContent(
                 .align(Alignment.CenterHorizontally)
                 .height(45.dp),
             onClick = {
-                      viewModel.create(fullname, username, email)
+                      viewModel.create(name, fullName, vat, businessName, address, coordinates)
             },
             shape = ShapeDefaults.Small
         ) {

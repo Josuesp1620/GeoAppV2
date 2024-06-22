@@ -1,6 +1,5 @@
 package com.geosolution.geoapp.presentation.screens.auth.signin.viewModel
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,6 +10,8 @@ import com.geosolution.geoapp.core.utils.onError
 import com.geosolution.geoapp.core.utils.onLoading
 import com.geosolution.geoapp.core.utils.onSuccess
 import com.geosolution.geoapp.data.remote.api.auth.SignInRequest
+import com.geosolution.geoapp.domain.use_case.auth.AuthSaveCacheUseCase
+import com.geosolution.geoapp.domain.use_case.auth.AuthSignInUseCase
 import com.geosolution.geoapp.presentation.screens.navigations.NavScreen
 import com.geosolution.geoapp.presentation.ui.utils.StateUtils.update
 import com.geosolution.geoapp.presentation.ui.utils.event.Event
@@ -22,42 +23,27 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val cacheAuthUseCase: CacheAuthUseCase,
-    private val signInUseCase: SignInUseCase
+    private val authSaveCache: AuthSaveCacheUseCase,
+    private val authSignIn: AuthSignInUseCase
 ) : ViewModel(), ViewModelEvents<Event> by ViewModelEventsImpl() {
 
     private val _state: MutableState<SignInState> = mutableStateOf(SignInState())
     val state: SignInState by _state
 
     fun signIn(email : String, password: String) {
-        Log.d("SignInViewModel", "$email - $password")
-        signInUseCase(SignInRequest(email = email, password = password))
+        authSignIn(SignInRequest(email = email, password = password))
             .onLoading {
                 _state.update { SignInState(loading = true) }
-                Log.d("SignInViewModel", "onLoading")
-                sendEvent(
-                    Event.NavigateTo(NavScreen.HomeScreen.route)
-                )
             }
             .onEmpty {
                 _state.update { SignInState(loading = false) }
-                Log.d("SignInViewModel", "onEmpty")
-                sendEvent(
-                    Event.NavigateTo(NavScreen.HomeScreen.route)
-                )
             }
             .onError {
                 _state.update { SignInState(loading = false) }
-                Log.d("SignInViewModel", "onError")
-                sendEvent(
-                    Event.NavigateTo(NavScreen.HomeScreen.route)
-                )
 
             }
             .onSuccess {
-                cacheAuthUseCase(this)
-                Log.d("SignInViewModel", "onSuccess")
-
+                authSaveCache(this)
                 sendEvent(
                     Event.NavigateTo(NavScreen.HomeScreen.route)
                 )

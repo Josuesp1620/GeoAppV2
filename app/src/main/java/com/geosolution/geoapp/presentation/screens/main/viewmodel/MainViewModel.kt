@@ -2,6 +2,7 @@ package com.geosolution.geoapp.presentation.screens.main.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.geosolution.geoapp.domain.use_case.auth.AuthGetCacheUseCase
 import com.geosolution.geoapp.presentation.common.connectivity.NetworkTracker
 import com.geosolution.geoapp.presentation.screens.navigations.NavScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val networkTracker: NetworkTracker,
-    private val getCacheAuthUseCase: GetCacheAuthUseCase
+    private val authGetCache: AuthGetCacheUseCase
 ) : ViewModel(), ViewModelEvents<Event> by ViewModelEventsImpl() {
     private val _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
@@ -36,7 +37,7 @@ class MainViewModel @Inject constructor(
 
     private fun loadAuthState() {
         viewModelScope.launch {
-            getCacheAuthUseCase().catch { e ->
+            authGetCache().catch { e ->
                 _state.update { state -> state.copy(snackbar = e.message ?: "") }
             }.collectLatest { auth ->
                 delay(5000)
