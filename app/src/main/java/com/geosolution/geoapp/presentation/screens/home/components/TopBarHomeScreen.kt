@@ -30,13 +30,14 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.geosolution.geoapp.R
-import com.geosolution.geoapp.domain.model.User
-import kotlin.math.roundToInt
+import com.geosolution.geoapp.presentation.screens.navigations.NavScreen
 
 
 @Composable
 fun TopBarHomeScreen(
+    navController: NavController,
     modifier: Modifier = Modifier,
 //    user: User,
 ) {
@@ -56,6 +57,7 @@ fun TopBarHomeScreen(
         Column(modifier = modifier.padding(horizontal = 24.dp)) {
             Spacer(modifier = Modifier.size(24.dp))
             TopBarProfile(
+                navController = navController,
                 modifier = Modifier.background(color = Color.Transparent),
 //                user = user
             )
@@ -69,6 +71,7 @@ fun TopBarHomeScreen(
 
 @Composable
 private fun TopBarProfile(
+    navController: NavController,
     modifier: Modifier = Modifier,
 //    user: User
 ) {
@@ -103,13 +106,15 @@ private fun TopBarProfile(
         )
 
         IconButton(
-            onClick = {},
+            onClick = {
+                      navController.navigate(NavScreen.MapScreen.route)
+            },
             modifier = Modifier
                 .size(24.dp)
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_settings),
-                contentDescription = "Settings",
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_map),
+                contentDescription = "Map",
                 tint = MaterialTheme.colorScheme.onPrimary
             )
         }

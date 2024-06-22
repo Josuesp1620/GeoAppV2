@@ -17,14 +17,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
+import com.geosolution.geoapp.presentation.screens.home.components.EmptyListView
 import com.geosolution.geoapp.presentation.screens.home.components.TopBarHomeScreen
 import com.geosolution.geoapp.presentation.screens.navigations.NavScreen
-import com.geosolution.geoapp.presentation.ui.theme.CampusXTheme
 
 @Composable
 fun HomeScreen(
@@ -47,6 +46,7 @@ fun HomeScreen(
     ) { paddingValues ->
 
         HomeScreenContent(
+            navController = navController,
             modifier = Modifier.padding(paddingValues)
         )
 
@@ -56,6 +56,7 @@ fun HomeScreen(
 
 @Composable
 fun HomeScreenContent(
+    navController: NavController,
     modifier: Modifier,
     bottomPadding: Dp = 0.dp,
 ) {
@@ -63,6 +64,7 @@ fun HomeScreenContent(
         modifier
     ) {
         TopBarHomeScreen(
+            navController = navController,
             modifier = Modifier
                 .zIndex(1f),
         )
@@ -96,6 +98,7 @@ fun HomeScreenContent(
                 .verticalScroll(rememberScrollState())
                 .padding(bottom = bottomPadding)
         ) {
+            EmptyListView()
         }
     }
 }
