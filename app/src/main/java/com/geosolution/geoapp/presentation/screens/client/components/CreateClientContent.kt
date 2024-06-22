@@ -84,6 +84,8 @@ fun CreateClientContent(
             placeholder = { Text(text = "Correo electronico") },
         )
 
+        Spacer(modifier = Modifier.height(25.dp))
+
         Button(
             modifier = Modifier
                 .fillMaxWidth()
