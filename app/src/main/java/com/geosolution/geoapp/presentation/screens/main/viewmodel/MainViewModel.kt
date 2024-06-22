@@ -43,10 +43,10 @@ class MainViewModel @Inject constructor(
                 delay(5000)
                 if (auth != null) {
                     _state.update { state -> state.copy(authState = AuthState.Authenticated(auth)) }
-                    eventFlow.emit(Event.NavigateTo(NavScreen.MapScreen.route))
+                    eventFlow.emit(Event.NavigateTo(NavScreen.HomeScreen.route))
                 } else {
-                    _state.update { state -> state.copy(authState = AuthState.Unauthenticated) }
-                    eventFlow.emit(Event.NavigateTo(NavScreen.MapScreen.route))
+//                    _state.update { state -> state.copy(authState = AuthState.Unauthenticated) }
+                    eventFlow.emit(Event.NavigateTo(NavScreen.HomeScreen.route))
                 }
             }
         }
