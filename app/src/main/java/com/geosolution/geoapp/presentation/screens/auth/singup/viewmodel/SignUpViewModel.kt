@@ -11,8 +11,6 @@ import com.geosolution.geoapp.core.utils.onError
 import com.geosolution.geoapp.core.utils.onLoading
 import com.geosolution.geoapp.core.utils.onSuccess
 import com.geosolution.geoapp.data.remote.api.auth.SignUpRequest
-import com.geosolution.geoapp.domain.use_case.SignUpUseCase
-import com.geosolution.geoapp.presentation.screens.home.HomeScreen
 import com.geosolution.geoapp.presentation.ui.utils.StateUtils.update
 import com.geosolution.geoapp.presentation.ui.utils.event.Event
 import com.geosolution.geoapp.presentation.ui.utils.event.ViewModelEvents

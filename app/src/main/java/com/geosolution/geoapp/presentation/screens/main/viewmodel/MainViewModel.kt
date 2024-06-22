@@ -2,7 +2,6 @@ package com.geosolution.geoapp.presentation.screens.main.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.geosolution.geoapp.domain.use_case.GetCacheAuthUseCase
 import com.geosolution.geoapp.presentation.common.connectivity.NetworkTracker
 import com.geosolution.geoapp.presentation.screens.navigations.NavScreen
 import dagger.hilt.android.lifecycle.HiltViewModel

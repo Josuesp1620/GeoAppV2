@@ -2,7 +2,6 @@ package com.geosolution.geoapp.data.remote.api.auth
 
 import com.geosolution.geoapp.data.remote.dto.Dto
 import com.geosolution.geoapp.domain.model.Auth
-import com.geosolution.geoapp.domain.model.Profile
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

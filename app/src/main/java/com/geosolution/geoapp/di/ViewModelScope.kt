@@ -1,13 +1,7 @@
 package com.geosolution.geoapp.di
 
 import com.geosolution.geoapp.domain.repository.AuthRepository
-import com.geosolution.geoapp.domain.repository.LocationCurrentRepository
-import com.geosolution.geoapp.domain.use_case.CacheAuthUseCase
-import com.geosolution.geoapp.domain.use_case.CacheLocationCurrentUseCase
-import com.geosolution.geoapp.domain.use_case.GetCacheAuthUseCase
-import com.geosolution.geoapp.domain.use_case.GetCacheLocationCurrentUseCase
-import com.geosolution.geoapp.domain.use_case.SignInUseCase
-import com.geosolution.geoapp.domain.use_case.SignUpUseCase
+import com.geosolution.geoapp.domain.repository.LocationRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,13 +38,13 @@ object ViewModelScope {
 
     @Provides
     @ViewModelScoped
-    fun providesCacheLocationCurrentUseCase(locationCurrentRepository: LocationCurrentRepository): CacheLocationCurrentUseCase {
-        return CacheLocationCurrentUseCase(locationCurrentRepository)
+    fun providesCacheLocationCurrentUseCase(locationRepository: LocationRepository): CacheLocationCurrentUseCase {
+        return CacheLocationCurrentUseCase(locationRepository)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideGetCacheLocationCurrentUseCase(locationCurrentRepository: LocationCurrentRepository): GetCacheLocationCurrentUseCase {
-        return GetCacheLocationCurrentUseCase(locationCurrentRepository)
+    fun provideGetCacheLocationCurrentUseCase(locationRepository: LocationRepository): GetCacheLocationCurrentUseCase {
+        return GetCacheLocationCurrentUseCase(locationRepository)
     }
 }

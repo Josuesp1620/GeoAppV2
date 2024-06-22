@@ -4,9 +4,9 @@ import com.geosolution.geoapp.data.local.datastore.AuthLocalDataStore
 import com.geosolution.geoapp.data.local.datastore.LocationCurrentLocalDataStore
 import com.geosolution.geoapp.data.remote.api.auth.AuthService
 import com.geosolution.geoapp.data.repository.AuthRepositoryImpl
-import com.geosolution.geoapp.data.repository.LocationCurrentRepositoryImpl
+import com.geosolution.geoapp.data.repository.LocationRepositoryImpl
 import com.geosolution.geoapp.domain.repository.AuthRepository
-import com.geosolution.geoapp.domain.repository.LocationCurrentRepository
+import com.geosolution.geoapp.domain.repository.LocationRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,7 +31,7 @@ object RepositoryModule {
     @Singleton
     fun provideLocationCurrentRepository(
         locationCurrentLocalDataStore: LocationCurrentLocalDataStore
-    ): LocationCurrentRepository = LocationCurrentRepositoryImpl(
+    ): LocationRepository = LocationRepositoryImpl(
         locationCurrentLocalDataStore = locationCurrentLocalDataStore
     )
 }

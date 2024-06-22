@@ -3,9 +3,7 @@ package com.geosolution.geoapp.presentation.screens.home.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.geosolution.geoapp.domain.model.LocationCurrent
-import com.geosolution.geoapp.domain.use_case.CacheLocationCurrentUseCase
-import com.geosolution.geoapp.domain.use_case.GetCacheLocationCurrentUseCase
+import com.geosolution.geoapp.domain.model.Location
 import com.geosolution.geoapp.presentation.ui.utils.event.Event
 import com.geosolution.geoapp.presentation.ui.utils.event.ViewModelEvents
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -59,7 +57,7 @@ class HomeViewModel @Inject constructor(
 
     fun updateLocationCurrent(latitude: Double, longitude: Double, state: Boolean) {
         viewModelScope.launch {
-            cacheLocationCurrentUseCase(LocationCurrent(latitude.toString(),  longitude.toString(), state.toString()))
+            cacheLocationCurrentUseCase(Location(latitude.toString(),  longitude.toString(), state.toString()))
         }
     }
 }

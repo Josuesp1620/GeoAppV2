@@ -2,7 +2,6 @@ package com.geosolution.geoapp.data.local.entity
 
 import com.geosolution.geoapp.data.local.utils.DatabaseEntity
 import com.geosolution.geoapp.domain.model.Auth
-import com.geosolution.geoapp.domain.model.Profile
 
 data class AuthEntity(
     val profile: Profile,
