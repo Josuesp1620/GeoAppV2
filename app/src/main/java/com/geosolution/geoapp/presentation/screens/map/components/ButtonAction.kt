@@ -31,7 +31,7 @@ fun ButtonAction(
         onClick = onButtonClick,
         modifier = modifier
             .clip(ShapeDefaults.Medium)
-            .size(38.dp)
+            .size(32.dp)
             .background(
                 color = Color.White,
             )

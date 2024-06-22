@@ -1,6 +1,8 @@
 package com.geosolution.geoapp.presentation.screens.home.components
 
+import android.app.PendingIntent
 import android.content.Intent
+import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +19,9 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
@@ -28,7 +33,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.geosolution.geoapp.core.location.LocationService
 import com.geosolution.geoapp.presentation.screens.home.viewmodel.HomeViewModel
-import com.geosolution.geolocation.GeoLocation
 
 @Composable
 @Preview(showSystemUi = true)
@@ -46,6 +50,9 @@ fun WeeklyGoalCard(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
+
+    var isLocationCurrent by rememberSaveable { mutableStateOf(state.isLocationCurrent) }
+
 
     ElevatedCard(
         modifier = modifier
@@ -73,15 +80,15 @@ fun WeeklyGoalCard(
                     ),
                 )
                 Switch(
-                    checked = state.isLocationCurrent,
+                    checked = isLocationCurrent,
                     onCheckedChange = { checked ->
-                        if (checked) {
-                            val intent = Intent(context, LocationService::class.java)
-                            context.startService(intent)
-                        } else {
-                            GeoLocation.stopLocationUpdates()
-                        }
+                        isLocationCurrent = checked
                         viewModel.updateLocationCurrentState(checked)
+                        context.startService(
+                            Intent(context, LocationService::class.java).apply {
+                                action = if (checked) LocationService.ACTION_START else LocationService.ACTION_STOP
+                            }
+                        )
                     }
                 )
             }
