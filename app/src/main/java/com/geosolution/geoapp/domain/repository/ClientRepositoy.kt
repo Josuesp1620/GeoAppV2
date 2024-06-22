@@ -5,11 +5,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface ClientRepositoy {
 
-    suspend fun clientCreate(client: Client)
+    suspend fun clientSaveStore(client: Client)
 
-    fun clientGetById(id: String): Flow<Client>
+    fun clientGetByIdStore(id: String): Flow<Client>
 
-    fun clientGetAll(): Flow<List<Client>>
+    fun clientGetAllStore(): Flow<List<Client>>
 
 
 }
