@@ -24,7 +24,7 @@ fun Navigation(
             StartedPageScreen(authState, navigationController)
         }
         composable(route = NavScreen.HomeScreen.route) {
-            HomeScreen()
+            HomeScreen(navigationController)
         }
         composable(route = NavScreen.MapScreen.route) {
             MapScreen(navigationController)

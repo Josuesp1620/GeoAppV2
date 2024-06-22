@@ -21,11 +21,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
 import com.geosolution.geoapp.presentation.screens.home.components.TopBarHomeScreen
+import com.geosolution.geoapp.presentation.screens.navigations.NavScreen
 import com.geosolution.geoapp.presentation.ui.theme.CampusXTheme
 
 @Composable
 fun HomeScreen(
+    navController: NavController,
 ) {
 
     Scaffold(
@@ -34,6 +37,7 @@ fun HomeScreen(
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.primary,
                 onClick = {
+                    navController.navigate(NavScreen.CreateClientScreen.route)
                 }
             ) {
                 Icon(Icons.Filled.Add, null, tint = Color.White)
@@ -94,14 +98,4 @@ fun HomeScreenContent(
         ) {
         }
     }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun HomeScreenComposable() {
-
-    CampusXTheme(dynamicColor = false, darkTheme = false) {
-        HomeScreen()
-    }
-
 }
