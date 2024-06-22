@@ -60,7 +60,7 @@ fun TopBarHomeScreen(
 //                user = user
             )
             Spacer(modifier = Modifier.size(32.dp))
-            WeeklyGoalCard()
+            LocationInfoCard()
         }
     }
 

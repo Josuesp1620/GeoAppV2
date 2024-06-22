@@ -36,13 +36,13 @@ import com.geosolution.geoapp.presentation.screens.home.viewmodel.HomeViewModel
 
 @Composable
 @Preview(showSystemUi = true)
-fun WeeklyGoalCardComposable(
+fun LocationInfoCardComposable(
     modifier: Modifier = Modifier,
 ) {
-    WeeklyGoalCard()
+    LocationInfoCard()
 }
 @Composable
-fun WeeklyGoalCard(
+fun LocationInfoCard(
     modifier: Modifier = Modifier,
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
