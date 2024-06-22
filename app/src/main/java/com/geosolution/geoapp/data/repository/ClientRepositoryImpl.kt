@@ -12,10 +12,11 @@ class ClientRepositoryImpl @Inject constructor(
     private val dataBase: ClientDao
 ): ClientRepositoy {
     override suspend fun clientSaveStore(client: Client) {
+        client.id = 0
         dataBase.clientSaveStore(client.asDatabaseEntity())
     }
 
-    override fun clientGetByIdStore(id: String): Flow<Client> = dataBase.clientGetByIdStore(id).map { it?.asDomain()!! }
+    override fun clientGetByIdStore(id: Int): Flow<Client> = dataBase.clientGetByIdStore(id).map { it?.asDomain()!! }
 
     override fun clientGetAllStore(): Flow<List<Client>> =
         dataBase.clientGetAllStore()

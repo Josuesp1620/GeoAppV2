@@ -8,5 +8,5 @@ import javax.inject.Inject
 class ClientGetByIdStoreUseCase @Inject constructor(
     private val repository: ClientRepositoy
 ) {
-    operator fun invoke(id: String): Flow<Client> = repository.clientGetByIdStore(id)
+    operator fun invoke(id: Int): Flow<Client> = repository.clientGetByIdStore(id)
 }

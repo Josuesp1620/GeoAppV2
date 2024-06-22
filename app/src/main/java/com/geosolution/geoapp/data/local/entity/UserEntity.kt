@@ -8,7 +8,7 @@ import com.geosolution.geoapp.domain.model.User
 @Entity(tableName = "user")
 data class UserEntity(
     @PrimaryKey(autoGenerate = false)
-    val id: String?,
+    val id: Int,
     val fullName: String?,
     val name: String?,
     val image: String?,

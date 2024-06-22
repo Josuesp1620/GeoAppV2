@@ -24,7 +24,6 @@ class CreateClientViewModel @Inject constructor(
 
     fun create(name : String, fullName : String, vat: String, businessName: String, address: String, coordinates: String) {
         val client = Client(
-            id = null,
             name = name,
             fullName = fullName,
             vat = vat,

@@ -13,7 +13,7 @@ interface ClientDao {
     fun clientGetAllStore(): Flow<List<ClientEntity>>
 
     @Query("SELECT * FROM client WHERE id = :id")
-    fun clientGetByIdStore(id: String): Flow<ClientEntity?>
+    fun clientGetByIdStore(id: Int): Flow<ClientEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun clientSaveStore(client: ClientEntity)

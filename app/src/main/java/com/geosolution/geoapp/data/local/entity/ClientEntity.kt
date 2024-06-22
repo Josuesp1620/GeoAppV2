@@ -8,7 +8,7 @@ import com.geosolution.geoapp.domain.model.Client
 @Entity(tableName = "client")
 data class ClientEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: String?,
+    val id: Int,
     val name: String?,
     val fullName: String?,
     val vat: String?,
@@ -25,7 +25,7 @@ data class ClientEntity(
         businessName = businessName,
         address = address,
         coordinates = coordinates,
-        image = image,
+        image = image
     )
 }
 
