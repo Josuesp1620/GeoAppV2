@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.geosolution.geoapp.domain.model.User
 import com.geosolution.geoapp.presentation.common.connectivity.NetworkTracker
 import com.geosolution.geoapp.presentation.screens.auth.signin.SignInScreen
 import com.geosolution.geoapp.presentation.screens.auth.singup.SignUpScreen
@@ -15,6 +16,7 @@ import com.geosolution.geoapp.presentation.screens.map.MapScreen
 
 @Composable
 fun Navigation(
+    user: User?,
     authState: AuthState,
     networkState: NetworkTracker.State,
     navigationController : NavHostController,
@@ -24,7 +26,7 @@ fun Navigation(
             StartedPageScreen(authState, navigationController)
         }
         composable(route = NavScreen.HomeScreen.route) {
-            HomeScreen(navigationController)
+            HomeScreen(user, navigationController)
         }
         composable(route = NavScreen.MapScreen.route) {
             MapScreen(navigationController)

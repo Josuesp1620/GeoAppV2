@@ -7,8 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.geosolution.geoapp.domain.model.Client
 import com.geosolution.geoapp.domain.use_case.client.ClientCreateStoreUseCase
-import com.geosolution.geoapp.presentation.screens.auth.signin.viewModel.SignInState
-import com.geosolution.geoapp.presentation.screens.main.viewmodel.AuthState
 import com.geosolution.geoapp.presentation.screens.navigations.NavScreen
 import com.geosolution.geoapp.presentation.ui.utils.StateUtils.update
 import com.geosolution.geoapp.presentation.ui.utils.event.Event
@@ -16,7 +14,6 @@ import com.geosolution.geoapp.presentation.ui.utils.event.ViewModelEvents
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.tech.cookhelper.presentation.ui.utils.event.ViewModelEventsImpl
 import javax.inject.Inject

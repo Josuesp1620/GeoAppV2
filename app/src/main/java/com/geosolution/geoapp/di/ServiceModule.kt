@@ -2,6 +2,8 @@ package com.geosolution.geoapp.di
 
 import com.geosolution.geoapp.data.remote.api.auth.AuthService
 import com.geosolution.geoapp.data.remote.api.auth.AuthServiceImpl
+import com.geosolution.geoapp.core.location.LocationApiService
+import com.geosolution.geoapp.core.location.LocationApiServiceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,4 +22,12 @@ object ServiceModule {
     ): AuthService = AuthServiceImpl(
         client = client,
     )
+
+//    @Provides
+//    @Singleton
+//    fun provideLocationService (
+//        client: HttpClient,
+//    ): LocationApiService = LocationApiServiceImpl(
+//        client = client,
+//    )
 }

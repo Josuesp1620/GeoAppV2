@@ -15,5 +15,5 @@ class UserRepositoryImpl @Inject constructor(
         dataBase.userSaveStore(user.asDatabaseEntity())
     }
 
-    override fun userGetStore(): Flow<User?> = dataBase.userGetStore().map { it?.asDomain() }
+    override fun userGetStore(email: String): Flow<User?> = dataBase.userGetStore(email).map { it?.asDomain() }
 }

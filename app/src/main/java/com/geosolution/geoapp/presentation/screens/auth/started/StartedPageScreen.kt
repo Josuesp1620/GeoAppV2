@@ -68,6 +68,10 @@ fun StartedPageScreen(
                 {
                     viewModel.goToHomeScreen()
                 },
+                navigateToSigUScreen =
+                {
+                    viewModel.goToSigUScreen()
+                },
             )
         }
     }

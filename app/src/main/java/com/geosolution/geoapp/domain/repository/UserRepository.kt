@@ -7,5 +7,6 @@ interface UserRepository {
 
     suspend fun userSaveStore(user: User)
 
-    fun userGetStore() : Flow<User?>
+    fun userGetStore(email: String) : Flow<User?>
+
 }

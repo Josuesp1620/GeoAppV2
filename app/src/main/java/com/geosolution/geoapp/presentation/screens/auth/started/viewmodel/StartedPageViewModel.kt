@@ -22,6 +22,12 @@ class StartedPageViewModel @Inject constructor(
         }
     }
 
+    fun goToSigUScreen(){
+        viewModelScope.launch(Dispatchers.IO) {
+            sendEvent(Event.NavigateTo(NavScreen.SignUpScreen.route))
+        }
+    }
+
     fun goToHomeScreen(){
         viewModelScope.launch(Dispatchers.IO) {
             sendEvent(Event.NavigateTo(NavScreen.HomeScreen.route))

@@ -27,7 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import com.geosolution.geoapp.R
 import com.geosolution.geoapp.presentation.screens.map.components.ButtonAction
 import com.geosolution.geoapp.presentation.screens.map.components.InfoCard
-import com.geosolution.geoapp.presentation.screens.map.components.Map
+import com.geosolution.geoapp.presentation.screens.map.components.MarkerMapScreen
 import com.geosolution.geoapp.presentation.screens.navigations.NavScreen
 import com.geosolution.geoapp.presentation.ui.theme.CampusXTheme
 import com.geosolution.geoapp.presentation.ui.utils.ComposeUtils
@@ -42,9 +42,6 @@ fun MapScreen(
 
     var shouldShowInfoCard by rememberSaveable { mutableStateOf(true) }
 
-    var mapSize by remember { mutableStateOf(Size(0f, 0f)) }
-    var mapCenter by remember { mutableStateOf(Offset(0f, 0f)) }
-
     GeoLocation.configure {
 
     }
@@ -56,14 +53,7 @@ fun MapScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        Map(
-            modifier = Modifier
-                .fillMaxSize()
-                .drawBehind {
-                    mapSize = size
-                    mapCenter = center
-                },
-            LatLng(-12.046374, -77.042793)
+        MarkerMapScreen(
         )
 
         // Top-Start button
@@ -77,27 +67,28 @@ fun MapScreen(
             }
         )
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomEnd)
-        ) {
-            // Bottom-End button
-            ButtonAction(
-                icon = ImageVector.vectorResource(id = R.drawable.ic_location),
-                modifier = Modifier.padding(end = 5.dp, bottom = 5.dp).align(Alignment.End),
-                onButtonClick = {
-                    navController.navigate(NavScreen.HomeScreen.route)
-                }
-            )
 
-            // Contenido que aparece abajo (InfoCard) con animación de deslizamiento
-            ComposeUtils.SlideDownAnimatedVisibility(
-                visible = shouldShowInfoCard
-            ) {
-                InfoCard()
-            }
-        }
+//        Column(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .align(Alignment.BottomEnd)
+//        ) {
+//            // Bottom-End button
+//            ButtonAction(
+//                icon = ImageVector.vectorResource(id = R.drawable.ic_location),
+//                modifier = Modifier.padding(end = 5.dp, bottom = 5.dp).align(Alignment.End),
+//                onButtonClick = {
+//                    navController.navigate(NavScreen.HomeScreen.route)
+//                }
+//            )
+//
+//            // Contenido que aparece abajo (InfoCard) con animación de deslizamiento
+//            ComposeUtils.SlideDownAnimatedVisibility(
+//                visible = shouldShowInfoCard
+//            ) {
+//                InfoCard()
+//            }
+//        }
     }
 }
 

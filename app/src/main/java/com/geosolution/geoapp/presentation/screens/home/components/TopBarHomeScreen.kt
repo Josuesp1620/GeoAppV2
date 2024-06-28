@@ -32,16 +32,20 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.geosolution.geoapp.R
+import com.geosolution.geoapp.domain.model.User
+import com.geosolution.geoapp.presentation.screens.home.viewmodel.HomeState
 import com.geosolution.geoapp.presentation.screens.home.viewmodel.HomeViewModel
 import com.geosolution.geoapp.presentation.screens.navigations.NavScreen
 
 
 @Composable
 fun TopBarHomeScreen(
-    homeViewModel: HomeViewModel,
-    navController: NavController,
+    state: HomeState,
     modifier: Modifier = Modifier,
-//    user: User,
+    activeLocation: (checked: Boolean) -> Unit,
+    user: User,
+    navController: NavController,
+
 ) {
     Box(
         modifier = modifier
@@ -61,10 +65,15 @@ fun TopBarHomeScreen(
             TopBarProfile(
                 navController = navController,
                 modifier = Modifier.background(color = Color.Transparent),
-//                user = user
+                user = user,
             )
             Spacer(modifier = Modifier.size(32.dp))
-            LocationInfoCard(homeViewModel)
+            LocationInfoCard(
+                activeLocation = { checked ->
+                    activeLocation(checked)
+                },
+                state = state
+            )
         }
     }
 
@@ -75,7 +84,7 @@ fun TopBarHomeScreen(
 private fun TopBarProfile(
     navController: NavController,
     modifier: Modifier = Modifier,
-//    user: User
+    user: User,
 ) {
     Row(
         modifier = modifier
@@ -97,7 +106,7 @@ private fun TopBarProfile(
                 withStyle(
                     style = SpanStyle(fontWeight = FontWeight.SemiBold),
                 ) {
-                    append("Josue")
+                    append("${user.name} ${user.fullName}")
                 }
             },
             style = MaterialTheme.typography.bodyMedium.copy(

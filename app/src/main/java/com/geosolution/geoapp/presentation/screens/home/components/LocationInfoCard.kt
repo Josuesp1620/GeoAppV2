@@ -29,25 +29,22 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.geosolution.geoapp.core.location.LocationService
+import com.geosolution.geoapp.presentation.screens.home.viewmodel.HomeState
 import com.geosolution.geoapp.presentation.screens.home.viewmodel.HomeViewModel
 
 
 @Composable
 fun LocationInfoCard(
-    homeViewModel: HomeViewModel,
+    state: HomeState,
     modifier: Modifier = Modifier,
+    activeLocation: (checked: Boolean) -> Unit,
 ) {
-    val viewModel: HomeViewModel = hiltViewModel()
-
-    val state by viewModel.state.collectAsStateWithLifecycle()
-
-    val context = LocalContext.current
 
 
     ElevatedCard(
         modifier = modifier
         .fillMaxWidth(),
-    elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp),
     ) {
         Column(
             modifier = Modifier
@@ -72,7 +69,7 @@ fun LocationInfoCard(
                 Switch(
                     checked = state.isLocationCurrent,
                     onCheckedChange = { checked ->
-                        homeViewModel.activeLocation(checked)
+                        activeLocation(checked)
                     }
                 )
             }

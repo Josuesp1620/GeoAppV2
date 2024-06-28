@@ -1,5 +1,7 @@
 package com.geosolution.geoapp.presentation.screens.auth.signin.viewModel
 
+import com.geosolution.geoapp.domain.model.User
+
 data class SignInState(
     val email: String = "",
     val password: String = "",

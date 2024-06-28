@@ -27,6 +27,7 @@ fun StartedPageContent(
     authState: AuthState,
     navigateToSigInScreen : () -> Unit,
     navigateToHomeScreen: () -> Unit,
+    navigateToSigUScreen: () -> Unit,
 ) {
     Column(
         modifier = Modifier.padding(top = 30.dp)
@@ -66,6 +67,22 @@ fun StartedPageContent(
                 ) {
                     TextCustom(
                         text= "Iniciar Sessión",
+                        color = Color.White,
+                        fontWeight = FontWeight(500)
+                    )
+                }
+                Button(
+                    modifier = Modifier.fillMaxWidth()
+                        .align(Alignment.CenterHorizontally)
+                        .padding(top = 30.dp)
+                        .height(45.dp),
+                    onClick = {
+                        navigateToSigUScreen()
+                    },
+                    shape = ShapeDefaults.Small
+                ) {
+                    TextCustom(
+                        text= "Registrarse",
                         color = Color.White,
                         fontWeight = FontWeight(500)
                     )

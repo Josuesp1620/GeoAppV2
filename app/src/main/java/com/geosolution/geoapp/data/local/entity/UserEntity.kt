@@ -11,6 +11,8 @@ data class UserEntity(
     val id: Int,
     val fullName: String?,
     val name: String?,
+    val email: String?,
+    val password: String?,
     val image: String?,
 ): DatabaseEntity {
     override fun asDomain(): User = User(
@@ -18,6 +20,8 @@ data class UserEntity(
         fullName = fullName,
         name = name,
         image = image,
+        email = email,
+        password = password,
     )
 }
 
@@ -26,4 +30,6 @@ fun User.asDatabaseEntity() : UserEntity = UserEntity(
     fullName = fullName,
     name = name,
     image = image,
+    email = email,
+    password = password,
 )

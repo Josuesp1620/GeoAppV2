@@ -1,5 +1,7 @@
 package com.geosolution.geoapp.di
 
+import android.content.Context
+import com.geosolution.geoapp.core.location.LocationApiServiceImpl
 import com.geosolution.geoapp.data.local.dao.ClientDao
 import com.geosolution.geoapp.data.local.dao.UserDao
 import com.geosolution.geoapp.data.local.database.Database
@@ -17,6 +19,7 @@ import com.geosolution.geoapp.domain.repository.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -30,7 +33,7 @@ object RepositoryModule {
         authService: AuthService,
         authDataStore: AuthDataStore
     ): AuthRepository = AuthRepositoryImpl(
-        service = authService,
+//      service = authService,
         dataStore = authDataStore
     )
 
@@ -50,9 +53,13 @@ object RepositoryModule {
         dataBase = dataBase.clientDao
     )
 
+
+
+
     @Provides
     @Singleton
     fun provideUserRepository(
+        @ApplicationContext context: Context,
         dataBase: Database
     ): UserRepository = UserRepositoryImpl(
         dataBase = dataBase.userDao

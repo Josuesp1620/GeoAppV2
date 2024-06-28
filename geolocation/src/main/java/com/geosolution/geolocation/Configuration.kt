@@ -25,7 +25,7 @@ data class Configuration(
 ) : Parcelable {
 
     companion object {
-        internal const val INTERVAL_IN_MS = 1000L
+        internal const val INTERVAL_IN_MS = 20000L
         internal const val FASTEST_INTERVAL_IN_MS = 1000L
         internal const val MAX_WAIT_TIME_IN_MS = 1000L
     }

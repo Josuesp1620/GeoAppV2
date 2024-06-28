@@ -8,5 +8,5 @@ import javax.inject.Inject
 class UserGetStoreUseCase @Inject constructor(
     private val repository: UserRepository
 ) {
-    operator fun invoke() : Flow<User?> = repository.userGetStore()
+    operator fun invoke(email: String) : Flow<User?> = repository.userGetStore(email)
 }

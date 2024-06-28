@@ -18,31 +18,37 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val service: AuthService,
     private val dataStore: AuthDataStore
 ) : AuthRepository {
-
-    override fun authSignIn(signInRequest: SignInRequest): Flow<Action<Auth>> = flow  {
-        emit(Action.Loading())
-        val response = service.authSignIn(signInRequest)
-
-        when(response.code) {
-            SUCCESS -> emit(Action.Success(data = response.data?.asDomain()))
-        }
-    }.catch {
-        emit(it.toAction())
+    override fun authSignIn(signInRequest: SignInRequest): Flow<Action<Auth>> {
+        TODO("Not yet implemented")
     }
 
-    override fun authSignUp(signUpRequest: SignUpRequest): Flow<Action<Auth>> = flow{
-        emit(Action.Loading())
-        val response = service.authSignUp(signUpRequest)
-
-        when(response.code) {
-            SUCCESS_CREATE -> emit(Action.Success(data = response.data?.asDomain()))
-        }
-    }.catch {
-        emit(it.toAction())
+    override fun authSignUp(signUpRequest: SignUpRequest): Flow<Action<Auth>> {
+        TODO("Not yet implemented")
     }
+
+//    override fun authSignIn(signInRequest: SignInRequest): Flow<Action<Auth>> = flow  {
+//        emit(Action.Loading())
+//        val response = service.authSignIn(signInRequest)
+//
+//        when(response.code) {
+//            SUCCESS -> emit(Action.Success(data = response.data?.asDomain()))
+//        }
+//    }.catch {
+//        emit(it.toAction())
+//    }
+
+//    override fun authSignUp(signUpRequest: SignUpRequest): Flow<Action<Auth>> = flow{
+//        emit(Action.Loading())
+//        val response = service.authSignUp(signUpRequest)
+//
+//        when(response.code) {
+//            SUCCESS_CREATE -> emit(Action.Success(data = response.data?.asDomain()))
+//        }
+//    }.catch {
+//        emit(it.toAction())
+//    }
 
     override suspend fun authSaveCache(auth: Auth) {
         dataStore.authSaveCache(auth.asDatabaseEntity())

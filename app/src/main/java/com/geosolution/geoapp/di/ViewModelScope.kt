@@ -2,6 +2,7 @@ package com.geosolution.geoapp.di
 
 import com.geosolution.geoapp.domain.repository.AuthRepository
 import com.geosolution.geoapp.domain.repository.ClientRepositoy
+import com.geosolution.geoapp.domain.repository.DeviceDataRepository
 import com.geosolution.geoapp.domain.repository.LocationRepository
 import com.geosolution.geoapp.domain.repository.UserRepository
 import com.geosolution.geoapp.domain.use_case.auth.AuthGetCacheUseCase
@@ -11,6 +12,7 @@ import com.geosolution.geoapp.domain.use_case.auth.AuthSignUpUseCase
 import com.geosolution.geoapp.domain.use_case.client.ClientCreateStoreUseCase
 import com.geosolution.geoapp.domain.use_case.client.ClientGetAllStoreUseCase
 import com.geosolution.geoapp.domain.use_case.client.ClientGetByIdStoreUseCase
+import com.geosolution.geoapp.domain.use_case.device_data.DeviceDataGetStore
 import com.geosolution.geoapp.domain.use_case.location.LocationDeleteCacheUseCase
 import com.geosolution.geoapp.domain.use_case.location.LocationGetCacheUseCase
 import com.geosolution.geoapp.domain.use_case.location.LocationSaveCacheUseCase
@@ -96,6 +98,18 @@ object ViewModelScope {
     @ViewModelScoped
     fun provideUserSaveStoreUseCase(userRepository: UserRepository): UserSaveStoreUseCase {
         return UserSaveStoreUseCase(userRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideDeviceDataSaveGetStore(deviceDataRepository: DeviceDataRepository): DeviceDataGetStore {
+        return DeviceDataGetStore(deviceDataRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideDeviceDeviceDataSaveGetStore(deviceDataRepository: DeviceDataRepository): DeviceDataGetStore {
+        return DeviceDataGetStore(deviceDataRepository)
     }
 
 }

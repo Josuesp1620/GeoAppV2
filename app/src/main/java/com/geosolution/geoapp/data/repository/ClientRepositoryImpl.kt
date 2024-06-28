@@ -1,6 +1,7 @@
 package com.geosolution.geoapp.data.repository
 
 import com.geosolution.geoapp.data.local.dao.ClientDao
+import com.geosolution.geoapp.data.local.datastore.AuthDataStore
 import com.geosolution.geoapp.data.local.entity.asDatabaseEntity
 import com.geosolution.geoapp.domain.model.Client
 import com.geosolution.geoapp.domain.repository.ClientRepositoy

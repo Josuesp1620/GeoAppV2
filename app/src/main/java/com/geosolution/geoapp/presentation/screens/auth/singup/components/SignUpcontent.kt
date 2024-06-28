@@ -11,6 +11,8 @@ import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.RemoveRedEye
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,7 +41,7 @@ fun SignUpContent(
     viewModel: SignUpViewModel
 ) {
     var fullname by rememberSaveable { mutableStateOf("") }
-    var username by rememberSaveable { mutableStateOf("")  }
+    var name by rememberSaveable { mutableStateOf("")  }
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("")  }
     var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
@@ -49,32 +51,32 @@ fun SignUpContent(
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = fullname,
+            value = name,
             leadingIcon = {
                 Icon(imageVector = Icons.Default.AccountBox, contentDescription = "account-box-icon")
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             onValueChange = {
-                fullname = it
+                name = it
             },
-            label = { Text(text = "Nombre Completo") },
-            placeholder = { Text(text = "Nombre Completo") },
+            label = { Text(text = "Nombres") },
+            placeholder = { Text(text = "Nombres") },
         )
 
         Spacer(modifier = Modifier.height(25.dp))
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = username,
+            value = fullname,
             leadingIcon = {
                 Icon(imageVector = Icons.Default.Face, contentDescription = "face-icon")
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             onValueChange = {
-                username = it
+                fullname = it
             },
-            label = { Text(text = "Usuario") },
-            placeholder = { Text(text = "Usuario") },
+            label = { Text(text = "Apellidos") },
+            placeholder = { Text(text = "Apellidos") },
         )
 
         Spacer(modifier = Modifier.height(25.dp))
@@ -109,15 +111,15 @@ fun SignUpContent(
             trailingIcon = {
                 IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
                     if (isPasswordVisible) {
-//                        Icon(
-//                            imageVector = Icons.Default.RemoveRedEye,
-//                            contentDescription = null
-//                        )
+                        Icon(
+                            imageVector = Icons.Default.RemoveRedEye,
+                            contentDescription = null
+                        )
                     } else {
-//                        Icon(
-//                            imageVector = Icons.Default.VisibilityOff,
-//                            contentDescription = null
-//                        )
+                        Icon(
+                            imageVector = Icons.Default.VisibilityOff,
+                            contentDescription = null
+                        )
                     }
                 }
             }
@@ -139,8 +141,11 @@ fun SignUpContent(
                 .padding(top = 8.dp)
                 .align(Alignment.CenterHorizontally)
                 .height(45.dp),
+            enabled = email.isNotBlank() && password.isNotBlank() && name.isNotBlank() && fullname.isNotBlank(),
             onClick = {
-                      viewModel.signUp(fullname, username, email, password)
+                if(email.isNotBlank() && password.isNotBlank() && name.isNotBlank() && fullname.isNotBlank()){
+                    viewModel.signUp(name, fullname, email, password)
+                }
             },
             shape = ShapeDefaults.Small
         ) {

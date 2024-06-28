@@ -31,6 +31,7 @@ fun SignUpScreen(
     viewModel: SignUpViewModel = hiltViewModel()
 ){
     SignUpScreen(
+        navController= navController,
         viewModel = viewModel,
         popBackStack = {
             Log.d("BACK_APP", "BACK_APP")
@@ -53,6 +54,7 @@ fun SignUpScreen(
 
 @Composable
 fun SignUpScreen(
+    navController: NavController,
     viewModel: SignUpViewModel,
     popBackStack: () -> Unit
 ){
@@ -104,5 +106,13 @@ fun SignUpScreen(
             }
         }
     )
+
+    viewModel.eventFlow.collectWithLifecycle {
+        when (it) {
+            is Event.NavigateTo -> {
+                navController.navigate(it.screen)
+            }
+        }
+    }
 }
 

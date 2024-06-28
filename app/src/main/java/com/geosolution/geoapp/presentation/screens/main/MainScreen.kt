@@ -37,6 +37,7 @@ fun MainScreen(
             authState = state.authState,
             networkState = state.networkState,
             navigationController = navigationController,
+            user = state.user
         )
         NetworkStatus(
             stateProvider = { state.networkState },

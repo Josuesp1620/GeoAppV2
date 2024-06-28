@@ -29,8 +29,7 @@ object DataStoreModule {
 
 }
 
+val Context.authStore by preferencesDataStore("auth")
 
-private val Context.authStore by preferencesDataStore("auth")
-
-private val Context.locationStore by preferencesDataStore("location")
+val Context.locationStore by preferencesDataStore("location")
 

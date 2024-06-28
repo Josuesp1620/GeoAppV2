@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import com.geosolution.geoapp.data.local.dao.ClientDao
+import com.geosolution.geoapp.data.local.dao.DeviceDataDao
 import com.geosolution.geoapp.data.local.datastore.AuthDataStore
 import com.geosolution.geoapp.data.local.dao.UserDao
 import com.geosolution.geoapp.data.local.database.Database
@@ -34,10 +35,17 @@ object RoomModule {
     fun provideUserDao(database: Database) : UserDao {
         return database.userDao
     }
+
     @Provides
     @Singleton
     fun provideClientDao(database: Database) : ClientDao {
         return database.clientDao
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeviceDataDao(database: Database) : DeviceDataDao {
+        return database.deviceDataDao
     }
 
 }
