@@ -14,6 +14,7 @@ import com.geosolution.geolocation.GeoLocation
 import com.geosolution.geolocation.extensions.getAvailableService
 import com.google.android.gms.location.LocationRequest
 import dagger.hilt.android.AndroidEntryPoint
+import org.maplibre.android.MapLibre
 import com.huawei.hms.location.LocationRequest as HSMLocationRequest
 
 @AndroidEntryPoint
@@ -22,6 +23,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        MapLibre.getInstance(this)
 
         when (getAvailableService()) {
             AvailableService.HMS -> {

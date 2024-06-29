@@ -29,7 +29,7 @@ fun Navigation(
             HomeScreen(user, navigationController)
         }
         composable(route = NavScreen.MapScreen.route) {
-            MapScreen(navigationController)
+            MapScreen(navController = navigationController)
         }
         composable(route = NavScreen.CreateClientScreen.route) {
             CreateClientScreen(navigationController)

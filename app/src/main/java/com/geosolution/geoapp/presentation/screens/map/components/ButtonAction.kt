@@ -3,6 +3,7 @@ package com.geosolution.geoapp.presentation.screens.map.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.IconButton
@@ -31,13 +32,15 @@ fun ButtonAction(
         onClick = onButtonClick,
         modifier = modifier
             .clip(ShapeDefaults.Medium)
-            .size(32.dp)
+            .size(45.dp)
             .background(
                 color = Color.White,
             )
-            .padding(10.dp)
     ) {
         Icon(
+            modifier = Modifier.background(
+                color = Color.Transparent
+            ),
             imageVector = icon,
             contentDescription = null,
             tint = Color.Black
