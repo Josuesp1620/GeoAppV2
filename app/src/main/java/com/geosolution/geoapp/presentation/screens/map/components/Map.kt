@@ -12,7 +12,6 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import com.geosolution.geoapp.R
 import com.geosolution.geoapp.presentation.screens.map.MapState
 import org.maplibre.android.MapLibre

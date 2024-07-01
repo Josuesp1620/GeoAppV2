@@ -204,7 +204,7 @@ private fun ClientList(
                     CardItem(
                         client = client,
                         modifier = Modifier
-                            .padding(vertical = 10.dp, horizontal = 24.dp)
+                            .padding(vertical = 10.dp)
                             .clickable { onItemClick(client) }
                     )
                     if (i < clientList.lastIndex)
