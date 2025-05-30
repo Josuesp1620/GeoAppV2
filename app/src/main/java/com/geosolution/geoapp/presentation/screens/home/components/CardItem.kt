@@ -44,6 +44,7 @@ import androidx.core.content.ContextCompat.startActivity
 import com.geosolution.geoapp.R
 import com.geosolution.geoapp.domain.model.Client
 import org.maplibre.android.geometry.LatLng
+import androidx.core.net.toUri
 
 
 @Composable
@@ -116,6 +117,7 @@ fun CardItem(
 
         Spacer(modifier = Modifier.width(16.dp))
         OpenGoogleMapsIcon(
+            modifier = Modifier.align(Alignment.CenterVertically),
             coordinates = client.coordinates!!,
             address = client.address!!,
         )
@@ -124,6 +126,7 @@ fun CardItem(
 
 @Composable
 fun OpenGoogleMapsIcon(
+    modifier: Modifier = Modifier,
     coordinates: String = "0,0",
     address: String = "",
 ) {
@@ -131,10 +134,10 @@ fun OpenGoogleMapsIcon(
     Icon(
         imageVector = Icons.Default.Api,
         contentDescription = "More info",
-        modifier = Modifier
+        modifier = modifier
             .size(24.dp)
             .clickable {
-                val gmmIntentUri = Uri.parse("geo:${coordinates}?q=${address}")
+                val gmmIntentUri = "geo:${coordinates}?q=${address}".toUri()
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                 mapIntent.setPackage("com.google.android.apps.maps")
                 startActivity(context, mapIntent, null)
