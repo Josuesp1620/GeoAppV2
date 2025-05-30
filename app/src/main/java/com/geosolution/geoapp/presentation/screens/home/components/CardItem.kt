@@ -10,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +24,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Api
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
@@ -75,8 +77,13 @@ fun CardItem(
             .clip(RoundedCornerShape(10.dp))
             .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
-            .padding(8.dp)
-    ) {
+            .padding(8.dp), content = function(client)
+    )
+}
+
+@Composable
+private fun function(client: Client): @Composable() (RowScope.() -> Unit) =
+    {
         // Imagen del perfil
         Image(
             painter = painterResource(id = R.drawable.google_satelite),
@@ -116,13 +123,18 @@ fun CardItem(
         }
 
         Spacer(modifier = Modifier.width(16.dp))
-        OpenGoogleMapsIcon(
+        OpenMapsIcon(
             modifier = Modifier.align(Alignment.CenterVertically),
             coordinates = client.coordinates!!,
             address = client.address!!,
         )
+        Spacer(modifier = Modifier.width(8.dp))
+        OpenGoogleMapsIcon(
+            modifier = Modifier.align(Alignment.CenterVertically),
+            coordinates = client.coordinates,
+            address = client.address,
+        )
     }
-}
 
 @Composable
 fun OpenGoogleMapsIcon(
@@ -133,6 +145,28 @@ fun OpenGoogleMapsIcon(
     val context = LocalContext.current
     Icon(
         imageVector = Icons.Default.Api,
+        contentDescription = "More info",
+        modifier = modifier
+            .size(24.dp)
+            .clickable {
+                val gmmIntentUri = "geo:${coordinates}?q=${address}".toUri()
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(context, mapIntent, null)
+            },
+        tint = MaterialTheme.colorScheme.primary
+    )
+}
+
+@Composable
+fun OpenMapsIcon(
+    modifier: Modifier = Modifier,
+    coordinates: String = "0,0",
+    address: String = "",
+) {
+    val context = LocalContext.current
+    Icon(
+        imageVector = Icons.Default.Map,
         contentDescription = "More info",
         modifier = modifier
             .size(24.dp)

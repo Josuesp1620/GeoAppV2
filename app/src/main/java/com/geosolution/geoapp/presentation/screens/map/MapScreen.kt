@@ -171,10 +171,10 @@ fun CardWithMapStyleSelection(
                             onMapStyleSelected("https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json")
                         }
                         MapStyleButton(R.drawable.google_satelite, "Satélite") {
-                            onMapStyleSelected("https://joucode.ddns.net/google_satelite_hybrid.json")
+                            onMapStyleSelected("https://raw.githubusercontent.com/Josuesp1620/templates/refs/heads/main/maplibre-base/public/google_satelite.json")
                         }
                         MapStyleButton(R.drawable.google_streets, "Relieve") {
-                            onMapStyleSelected("https://joucode.ddns.net/google_streets.json")
+                            onMapStyleSelected("https://raw.githubusercontent.com/Josuesp1620/templates/refs/heads/main/maplibre-base/public/google_streets.json")
                         }
                     }
 
