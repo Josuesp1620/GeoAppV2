@@ -8,6 +8,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -72,15 +74,15 @@ fun SingInContent(
             trailingIcon = {
                 IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
                     if (isPasswordVisible) {
-//                        Icon(
-//                            imageVector = Icons.Default.RemoveRedEye,
-//                            contentDescription = null
-//                        )
+                        Icon(
+                            imageVector = Icons.Default.Visibility,
+                            contentDescription = null
+                        )
                     } else {
-//                        Icon(
-//                            imageVector = Icons.Default.VisibilityOff,
-//                            contentDescription = null
-//                        )
+                        Icon(
+                            imageVector = Icons.Default.VisibilityOff,
+                            contentDescription = null
+                        )
                     }
                 }
             }
