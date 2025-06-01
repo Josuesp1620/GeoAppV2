@@ -1,14 +1,10 @@
 package com.geosolution.geoapp.presentation.screens.main
 
 import android.content.Intent
-import android.hardware.Sensor
-import android.hardware.SensorManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.core.content.ContextCompat
-import com.geosolution.geoapp.core.location.LocationService
-import com.geosolution.geoapp.presentation.ui.theme.CampusXTheme
+import com.geosolution.geoapp.presentation.ui.theme.GeoAppTheme
 import com.geosolution.geolocation.AvailableService
 import com.geosolution.geolocation.GeoLocation
 import com.geosolution.geolocation.extensions.getAvailableService
@@ -44,7 +40,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
 
-            CampusXTheme(dynamicColor = false, darkTheme = false) {
+            GeoAppTheme(dynamicColor = false, darkTheme = false) {
                 MainScreen()
             }
         }

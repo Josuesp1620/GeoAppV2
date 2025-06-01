@@ -1,6 +1,5 @@
 package com.geosolution.geoapp.presentation.screens.map.components
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable

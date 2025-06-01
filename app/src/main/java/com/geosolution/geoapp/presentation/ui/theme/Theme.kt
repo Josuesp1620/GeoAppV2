@@ -39,7 +39,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun CampusXTheme(
+fun GeoAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,

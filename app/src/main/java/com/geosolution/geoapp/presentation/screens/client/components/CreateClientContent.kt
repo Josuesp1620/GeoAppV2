@@ -42,7 +42,6 @@ fun CreateClientContent(
 
     Column(
     ) {
-
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = name,
@@ -116,7 +115,6 @@ fun CreateClientContent(
             placeholder = { Text(text = "Dirección") },
         )
 
-
         Spacer(modifier = Modifier.height(25.dp))
 
         OutlinedTextField(
@@ -130,8 +128,20 @@ fun CreateClientContent(
             label = { Text(text = "Coordenadas") },
             placeholder = { Text(text = "LAT - LONG") },
         )
-
         Spacer(modifier = Modifier.height(25.dp))
+
+//        OutlinedTextField(
+//            modifier = Modifier.fillMaxWidth(),
+//            value = address,
+//            leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "email-icon") },
+//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+//            onValueChange = {
+//                address = it
+//            },
+//            label = { Text(text = "Dirección") },
+//            placeholder = { Text(text = "Dirección") },
+//        )
+//        Spacer(modifier = Modifier.height(25.dp))
 
         Button(
             modifier = Modifier

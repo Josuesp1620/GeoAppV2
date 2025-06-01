@@ -174,7 +174,7 @@ class LocationService: LifecycleService() {
                         Log.e("Error", "Error getting device data: ${e.message}")
                     }
                     .onEach { dt ->
-                        send_location_api_service(dataStore, database).sendLocationArray(dt)
+//                        send_location_api_service(dataStore, database).sendLocationArray(dt)
                     }
                     .collect {  /* No-op, just collecting to trigger flow */ }
             }
@@ -239,7 +239,7 @@ class LocationService: LifecycleService() {
                         }
                         is NetworkTracker.Available -> {
                             send_location_local_service(dataStore, dataBase)
-                            service.sendLocation(data_api)
+//                            service.sendLocation(data_api)
                             delete_location_local_service(dataBase)
                         }
                         NetworkTracker.Init -> TODO()
