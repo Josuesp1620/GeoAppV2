@@ -2,7 +2,9 @@ package com.geosolution.geoapp.presentation.screens.home.viewmodel
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.ViewModel
+import com.geosolution.geoapp.data.service.LocationBackgroundService
 import androidx.lifecycle.viewModelScope
 import com.geosolution.geoapp.domain.model.Location
 import com.geosolution.geoapp.domain.use_case.client.ClientGetAllStoreUseCase
@@ -54,6 +56,17 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun startUpdates() {
+        val intent = Intent(contextLiveData, LocationBackgroundService::class.java).apply {
+            action = LocationBackgroundService.ACTION_START_LOCATION_SERVICE
+        }
+        contextLiveData.startService(intent)
+    }
+
+    private fun stopUpdates() {
+        val intent = Intent(contextLiveData, LocationBackgroundService::class.java).apply {
+            action = LocationBackgroundService.ACTION_STOP_LOCATION_SERVICE
+        }
+        contextLiveData.startService(intent)
     }
 
     fun activeLocation(checked: Boolean) {
@@ -63,6 +76,7 @@ class HomeViewModel @Inject constructor(
         if (checked) {
             startUpdates()
         } else {
+            stopUpdates()
             clearLocationCache()
         }
     }

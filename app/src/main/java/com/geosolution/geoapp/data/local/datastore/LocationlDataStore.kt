@@ -16,6 +16,7 @@ class LocationlDataStore(
         dataStore.edit { pref ->
             pref[KeyLocationCurrentLatitude] = locationCurrent.latitude.toString()
             pref[KeyLocationCurrentLongitude] = locationCurrent.longitude.toString()
+            pref[KeyLocationCurrentBearing] = locationCurrent.bearing
         }
 
     }
@@ -25,9 +26,11 @@ class LocationlDataStore(
         return dataStore.data.map { pref ->
             val latitude = pref[KeyLocationCurrentLatitude] ?: return@map null
             val longitude = pref[KeyLocationCurrentLongitude] ?: return@map null
+            val bearing = pref[KeyLocationCurrentBearing] ?: return@map null
             LocationEntity(
                 longitude = longitude,
                 latitude = latitude,
+                bearing = bearing,
             )
         }
     }
@@ -36,11 +39,13 @@ class LocationlDataStore(
         dataStore.edit { preferences ->
             preferences.remove(KeyLocationCurrentLatitude)
             preferences.remove(KeyLocationCurrentLongitude)
+            preferences.remove(KeyLocationCurrentBearing)
         }
     }
 
     companion object {
         private val KeyLocationCurrentLatitude = stringPreferencesKey("location_current_latitude")
         private val KeyLocationCurrentLongitude = stringPreferencesKey("location_current_longitude")
+        private val KeyLocationCurrentBearing = stringPreferencesKey("location_current_bearing")
     }
 }

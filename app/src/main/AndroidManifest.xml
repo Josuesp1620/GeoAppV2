@@ -33,6 +33,10 @@
             android:name=".core.location.LocationService"
             android:exported="false"
             android:foregroundServiceType="location"/>
+        <service
+            android:name=".data.service.LocationBackgroundService"
+            android:exported="false"
+            android:foregroundServiceType="location"/>
         <activity
             android:name=".presentation.screens.main.MainActivity"
             android:exported="true"

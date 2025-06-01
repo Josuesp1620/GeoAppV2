@@ -5,4 +5,5 @@ import com.geosolution.geoapp.domain.utils.Domain
 data class Location(
     val latitude: String,
     val longitude: String,
+    val bearing: String,
 ) : Domain
