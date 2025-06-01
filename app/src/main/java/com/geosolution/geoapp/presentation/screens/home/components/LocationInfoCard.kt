@@ -92,7 +92,7 @@ fun LocationInfoCard(
                     )
                 )
                 Text(
-                    text = "Bearing: ${state.location?.bearing?.toInt() ?: "unknown"}",
+                    text = "Bearing: ${state.location?.bearing?.let { String.format("%.1f°", it) } ?: "unknown"}",
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

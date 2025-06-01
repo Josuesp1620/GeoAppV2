@@ -3,6 +3,7 @@ package com.geosolution.geoapp.data.local.datastore
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.geosolution.geoapp.data.local.entity.LocationEntity
 import kotlinx.coroutines.flow.Flow
@@ -46,6 +47,6 @@ class LocationlDataStore(
     companion object {
         private val KeyLocationCurrentLatitude = stringPreferencesKey("location_current_latitude")
         private val KeyLocationCurrentLongitude = stringPreferencesKey("location_current_longitude")
-        private val KeyLocationCurrentBearing = stringPreferencesKey("location_current_bearing")
+        private val KeyLocationCurrentBearing = floatPreferencesKey("location_current_bearing")
     }
 }

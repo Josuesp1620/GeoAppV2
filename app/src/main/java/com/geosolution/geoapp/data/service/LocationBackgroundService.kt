@@ -63,7 +63,7 @@ class LocationBackgroundService : Service() {
                     val location = Location(
                         latitude = androidLocation.latitude.toString(),
                         longitude = androidLocation.longitude.toString(),
-                        bearing = androidLocation.bearing.toString()
+                        bearing = androidLocation.bearing
                     )
                     serviceScope.launch {
                         try {
