@@ -1,7 +1,6 @@
 package com.geosolution.geoapp.di
 
 import android.content.Context
-import com.geosolution.geoapp.core.location.LocationApiServiceImpl
 import com.geosolution.geoapp.data.local.dao.ClientDao
 import com.geosolution.geoapp.data.local.dao.UserDao
 import com.geosolution.geoapp.data.local.database.Database

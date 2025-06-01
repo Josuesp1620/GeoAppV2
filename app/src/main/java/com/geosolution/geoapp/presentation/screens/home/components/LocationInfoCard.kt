@@ -28,7 +28,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.geosolution.geoapp.core.location.LocationService
 import com.geosolution.geoapp.presentation.screens.home.viewmodel.HomeState
 import com.geosolution.geoapp.presentation.screens.home.viewmodel.HomeViewModel
 

@@ -34,32 +34,32 @@ fun MarkerMapScreen(
     MapLibre.getInstance(context)
 
     val mapView = remember { MapView(context) }
-    val sydney = LatLng(state.location?.latitude!!, state.location.longitude)
+//    val sydney = LatLng(state.location?.latitude!!, state.location.longitude)
 
     // Observa cambios en el estilo del mapa
     LaunchedEffect(selectedMapStyle) {
         mapView.getMapAsync { mapboxMap ->
             mapboxMap.setStyle(selectedMapStyle) { style ->
-                val drawable = ContextCompat.getDrawable(context, R.drawable.location_marker)
-                style.addImage("marker-pin", BitmapUtils.getBitmapFromDrawable(drawable!!)!!)
-
-                val symbolManager = SymbolManager(mapView, mapboxMap, style)
-                symbolManager.iconAllowOverlap = true
-                symbolManager.iconIgnorePlacement = true
-
-                val symbol = symbolManager.create(
-                    SymbolOptions()
-                        .withLatLng(sydney)
-                        .withIconImage("marker-pin")
-                        .withIconSize(0.35f)
-                        .withIconAnchor("bottom")
-                )
-                symbolManager.update(symbol)
-
-                symbolManager.addClickListener {
-                    Toast.makeText(context, "Opera house", Toast.LENGTH_LONG).show()
-                    true
-                }
+//                val drawable = ContextCompat.getDrawable(context, R.drawable.location_marker)
+//                style.addImage("marker-pin", BitmapUtils.getBitmapFromDrawable(drawable!!)!!)
+//
+//                val symbolManager = SymbolManager(mapView, mapboxMap, style)
+//                symbolManager.iconAllowOverlap = true
+//                symbolManager.iconIgnorePlacement = true
+//
+//                val symbol = symbolManager.create(
+//                    SymbolOptions()
+//                        .withLatLng(sydney)
+//                        .withIconImage("marker-pin")
+//                        .withIconSize(0.35f)
+//                        .withIconAnchor("bottom")
+//                )
+//                symbolManager.update(symbol)
+//
+//                symbolManager.addClickListener {
+//                    Toast.makeText(context, "Opera house", Toast.LENGTH_LONG).show()
+//                    true
+//                }
                 val wmsUrlTemplate = "https://geosdot.servicios.gob.pe/geoserver/geoportal/wms?" +
                         "service=WMS" +
                         "&version=1.1.1" +
@@ -87,7 +87,7 @@ fun MarkerMapScreen(
                 }
 
             }
-            mapboxMap.cameraPosition = CameraPosition.Builder().target(sydney).zoom(13.0).build()
+//            mapboxMap.cameraPosition = CameraPosition.Builder().target(sydney).zoom(13.0).build()
         }
     }
 

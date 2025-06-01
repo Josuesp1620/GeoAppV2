@@ -2,21 +2,15 @@ package com.geosolution.geoapp.presentation.screens.home.viewmodel
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.geosolution.geoapp.core.location.LocationService
-import com.geosolution.geoapp.data.local.entity.asDatabaseEntity
 import com.geosolution.geoapp.domain.model.Location
 import com.geosolution.geoapp.domain.use_case.client.ClientGetAllStoreUseCase
 import com.geosolution.geoapp.domain.use_case.location.LocationDeleteCacheUseCase
 import com.geosolution.geoapp.domain.use_case.location.LocationGetCacheUseCase
 import com.geosolution.geoapp.domain.use_case.location.LocationSaveCacheUseCase
-import com.geosolution.geoapp.domain.use_case.user.UserGetStoreUseCase
 import com.geosolution.geoapp.presentation.ui.utils.event.Event
 import com.geosolution.geoapp.presentation.ui.utils.event.ViewModelEvents
-import com.geosolution.geolocation.GeoLocation.startLocationUpdates
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -60,22 +54,12 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun startUpdates() {
-        startLocationUpdates(this.contextLiveData).observeForever { locationResult ->
-            viewModelScope.launch {
-                val location = Location(locationResult.location?.latitude.toString(), locationResult.location?.longitude.toString())
-                _state.update { state -> state.copy(location=locationResult.location!!) }
-                onLocationUpdate(location)
-            }
-        }
     }
 
     fun activeLocation(checked: Boolean) {
         updateLocationCurrentState(checked)
 
-        val intent = Intent(contextLiveData, LocationService::class.java).apply {
-            action = if (checked) LocationService.ACTION_START else LocationService.ACTION_STOP
-        }
-        contextLiveData.startService(intent)
+
         if (checked) {
             startUpdates()
         } else {
