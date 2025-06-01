@@ -1,0 +1,21 @@
+R_DEF: Internal format may change without notice
+local
+color colorAccent
+color colorPrimary
+color colorPrimaryDark
+drawable ic_location_on
+layout activity_location_permission
+string cancel
+string deny
+string enable
+string geolocation_location_resolution_message
+string geolocation_location_resolution_title
+string geolocation_permission_blocked_message
+string geolocation_permission_blocked_title
+string geolocation_rationale_message
+string geolocation_rationale_title
+string grant
+string open_settings
+style GeoLocationTheme
+style GeoLocationTheme.Dark
+style GeoLocationTheme.Light
