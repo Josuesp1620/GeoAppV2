@@ -2,16 +2,20 @@ package com.geosolution.geoapp.core.location
 
 import android.app.Notification
 import android.app.NotificationChannel
+import android.Manifest
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.os.BatteryManager
 import android.os.Build
 import android.os.IBinder
+import android.os.Looper
 import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.room.Room
@@ -29,7 +33,12 @@ import com.geosolution.geoapp.domain.use_case.device_data.DeviceDataGetStore
 import com.geosolution.geoapp.domain.use_case.device_data.DeviceDataSaveStoreUseCase
 import com.geosolution.geoapp.domain.use_case.user.UserGetStoreUseCase
 import com.geosolution.geoapp.presentation.common.connectivity.NetworkTracker
-import com.geosolution.geolocation.GeoLocation
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
@@ -54,9 +63,17 @@ class LocationService: LifecycleService() {
         return null
     }
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
+
     private val manager: NotificationManager by lazy {
         getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
             ?: throw Exception("No notification manager found")
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -70,7 +87,11 @@ class LocationService: LifecycleService() {
     }
 
     private fun stop() {
-        GeoLocation.stopLocationUpdates()
+        try {
+            fusedLocationClient.removeLocationUpdates(locationCallback)
+        } catch (e: Exception) {
+            Log.e("LocationService", "Failed to remove location updates", e)
+        }
         this@LocationService.stopService(Intent(this@LocationService, LocationService::class.java))
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
@@ -189,96 +210,126 @@ class LocationService: LifecycleService() {
 
 
     private fun start() {
-        startForeground(NOTIFICATION_ID, getNotification())
-        GeoLocation.configure {
-            enableBackgroundUpdates = true
-        }
-        GeoLocation.startLocationUpdates(this).observe(this) { result ->
-            CoroutineScope(Dispatchers.IO).launch {
+        startForeground(NOTIFICATION_ID, getNotification("Starting location updates..."))
 
-                try {
+        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000L)
+            .setWaitForAccurateLocation(false)
+            .setMinUpdateIntervalMillis(5000L)
+            .build()
 
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                super.onLocationResult(locationResult)
+                locationResult.lastLocation?.let { location ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        try {
+                            val networkConnection = NetworkTrackerLocation(applicationContext)
+                            val network_state: NetworkTracker.State? = networkConnection.flow
+                                .catch { e ->
+                                    Log.e("LocationService", "Failed Service Networkstate:", e)
+                                }
+                                .firstOrNull()
 
-                    // Pass the context and coroutine scope properly
-                    val networkConnection = NetworkTrackerLocation(applicationContext)
-                    val network_state: NetworkTracker.State? = networkConnection.flow
-                        .catch { e ->
-                            Log.e("LocationService", "Failed Service Networkstate:", e)
+                            val dataBase = Room.databaseBuilder(
+                                context = applicationContext,
+                                klass = Database::class.java,
+                                name = "GeoAppDataBase"
+                            ).build()
+
+                            val dataStore = AuthDataStore(dataStore = authStore)
+                            val service = send_location_api_service(dataStore, dataBase)
+
+                            val userName = service.getUserData()?.name ?: "Unknown User"
+
+                            val data_api = DeviceData(
+                                id = 0,
+                                name = userName,
+                                state = "conectado",
+                                team = "Villa el salvador", // Consider making this dynamic or configurable
+                                gender = "male", // Consider making this dynamic or configurable
+                                time = getCurrentTimeFormatted(),
+                                angle = location.bearing,
+                                latitud = location.latitude,
+                                longitud = location.longitude,
+                                battery = getBatteryPercentage(),
+                                network = getSignalStrength(), // Assuming getSignalStrength() is appropriate here
+                            )
+
+                            when (network_state) {
+                                is NetworkTracker.Unavailable -> {
+                                    save_location_local_service(dataBase, deviceData = data_api)
+                                    Log.e("LocationService", "Network unavailable. Location saved locally.")
+                                }
+                                is NetworkTracker.Available -> {
+                                    send_location_local_service(dataStore, dataBase) // Send pending local data
+                                    // service.sendLocation(data_api) // Send current location
+                                    delete_location_local_service(dataBase) // Clear sent local data
+                                    Log.i("LocationService", "Network available. Location sent.")
+                                }
+                                NetworkTracker.Init, null -> {
+                                    Log.w("LocationService", "Network state is Init or null.")
+                                    // Optionally, save locally if network state is uncertain
+                                    save_location_local_service(dataBase, deviceData = data_api)
+                                }
+                            }
+                            manager.notify(NOTIFICATION_ID, getNotification("Location: ${location.latitude}, ${location.longitude}"))
+                        } catch (e: Exception) {
+                            Log.e("LocationService", "Failed to process location or send data", e)
+                            manager.notify(NOTIFICATION_ID, getNotification("Error: ${e.message}"))
                         }
-                        .firstOrNull()
-
-
-                    val dataBase = Room.databaseBuilder(
-                        context = applicationContext,
-                        klass = Database::class.java,
-                        name = "GeoAppDataBase"
-                    ).build()
-
-                    val dataStore = AuthDataStore(dataStore = authStore)
-
-                    val service = send_location_api_service(dataStore, dataBase)
-
-                    val data_api = DeviceData(
-                        id=0,
-                        name = service.getUserData()?.name!!,
-                        state = "conectado",
-                        team = "Villa el salvador",
-                        gender = "male",
-                        time = getCurrentTimeFormatted(),
-                        angle = result.location?.bearing!!,
-                        latitud = result.location?.latitude!!,
-                        longitud = result.location?.longitude!!,
-                        battery = getBatteryPercentage(),
-                        network = getBatteryPercentage(),
-                    )
-
-                    when (network_state) {
-                        is NetworkTracker.Unavailable -> {
-                            save_location_local_service(dataBase, deviceData = data_api)
-                            Log.e("LocationService", "Failed to send location: NetworkTracker.Unavailable")
-                        }
-                        is NetworkTracker.Available -> {
-                            send_location_local_service(dataStore, dataBase)
-//                            service.sendLocation(data_api)
-                            delete_location_local_service(dataBase)
-                        }
-                        NetworkTracker.Init -> TODO()
-                        null -> TODO()
                     }
-                } catch (e: Exception) {
-                    Log.e("LocationService", "Failed to send location", e)
                 }
             }
-            manager.notify(NOTIFICATION_ID, getNotification(result))
+        }
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.e("LocationService", "Location permissions not granted.")
+            // Consider stopping the service or notifying the user if permissions are critical
+            manager.notify(NOTIFICATION_ID, getNotification("Error: Location permissions not granted."))
+            return
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Log.e("LocationService", "Background location permission not granted.")
+                // Notify user or stop service if background permission is essential for the app's functionality
+                manager.notify(NOTIFICATION_ID, getNotification("Error: Background location permission not granted."))
+                // Depending on app requirements, you might stop the service here or limit functionality
+            }
+        }
+
+        try {
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+        } catch (e: SecurityException) {
+            Log.e("LocationService", "SecurityException while requesting location updates.", e)
+            manager.notify(NOTIFICATION_ID, getNotification("Error: SecurityException requesting updates."))
         }
     }
 
-
-    private fun getNotification(result: Any? = null): Notification {
-        val manager =
+    private fun getNotification(message: String? = null): Notification {
+        val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
                 ?: throw Exception("No notification manager found")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             manager.createNotificationChannel(
                 NotificationChannel(
-                    "location",
+                    "location_channel_id", // Consistent channel ID
                     "Location Updates",
-                    NotificationManager.IMPORTANCE_DEFAULT
-                )
+                    NotificationManager.IMPORTANCE_LOW // Use LOW to avoid sound/vibration for ongoing task
+                ).apply {
+                    description = "Provides ongoing location updates"
+                }
             )
         }
-        return with(NotificationCompat.Builder(this, "location")) {
-            setContentTitle("Location Service")
-            setContentText("$result")
-//            result?.apply {
-//                location?.let {
-//                    setContentText("Sharing Current Location")
-//                } ?: setContentText("Error: ${error?.message}")
-//            } ?: setContentText("Trying to get location updates")
+        return with(NotificationCompat.Builder(this, "location_channel_id")) {
+            setContentTitle("Location Service Active")
+            setContentText(message ?: "Tracking location...")
             setSmallIcon(R.drawable.ic_location)
+            setOngoing(true) // Makes the notification non-dismissible
             setAutoCancel(false)
             setOnlyAlertOnce(true)
+            setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             build()
         }
     }
