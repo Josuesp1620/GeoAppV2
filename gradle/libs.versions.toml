@@ -1,31 +1,40 @@
 [versions]
 agp = "8.10.1"
-kotlin = "2.0.0"
+kotlin = "2.0.21"
 coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.9.0"
 activityCompose = "1.10.1"
-composeBom = "2025.05.01"
-desugarJdkLibs = "2.1.5"
+composeBom = "2024.09.00"
 hiltAndroid = "2.56.2"
-kotlinKsp = "2.1.21-2.0.1"
 playServicesBasement = "18.7.0"
 playServicesLocation = "21.3.0"
 maplibreGl= "11.9.0"
-appcompat = "1.7.0"
-material = "1.12.0"
-kotlinPlugin = "2.0.0"
 lifecycleService = "2.9.0"
+kotlinPlugin = "2.0.0"
+desugarJdkLibs = "2.1.5"
+kotlinKsp = "2.1.21-2.0.1"
 
 [libraries]
-# Core KTX
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-
-# Lifecycle
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtx" }
+desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugarJdkLibs" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-lifecycle-service = { group = "androidx.lifecycle", name = "lifecycle-service", version.ref = "lifecycleService" }
 
 # Dagger Hilt
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "hiltAndroid" }
@@ -34,7 +43,7 @@ hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hil
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version = "1.2.0" }
 
 # Serialization
-jetbrains-kotlinx-serialization = { group = "org.jetbrains.kotlinx", name="kotlinx-serialization-json", version = "1.5.1" }
+jetbrains-kotlinx-serialization = { group = "org.jetbrains.kotlinx", name="kotlinx-serialization-json", version = "1.7.3" }
 
 # DataStore
 androidx-datastore-preferences = { group = "androidx.datastore", name="datastore-preferences", version = "1.1.7" }
@@ -53,22 +62,14 @@ ktor-serialization-kotlinx-json = { group = "io.ktor", name="ktor-serialization-
 ktor-logging = { group = "io.ktor", name="ktor-client-logging", version = "2.3.3" }
 ktor-auth = { group = "io.ktor", name="ktor-client-auth", version = "2.3.3" }
 
+
 # Play Services GMS
 play-services-basement = { group = "com.google.android.gms", name = "play-services-basement", version.ref = "playServicesBasement" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 
 # Maplibre
 org-maplibre-gl = { group = "org.maplibre.gl", name = "android-sdk", version.ref = "maplibreGl"}
-org-maplibre-gl-annotation-v9 = { group = "org.maplibre.gl", name = "android-plugin-annotation-v9", version = "3.0.0"}
-
-# Compose
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
-androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
-androidx-ui = { group = "androidx.compose.ui", name = "ui" }
-androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+org-maplibre-gl-annotation-v9 = { group = "org.maplibre.gl", name = "android-plugin-annotation-v9", version = "3.0.2"}
 
 # Icons Extended
 androidx-compose-material = { group = "androidx.compose.material", name = "material-icons-extended", version = "1.7.8" }
@@ -76,25 +77,10 @@ androidx-compose-material = { group = "androidx.compose.material", name = "mater
 # Navigate Compose
 androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version = "2.9.0" }
 
-# Compose Test
-androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-
-# Test Implementation
-desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugarJdkLibs" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-
-# geolocation Module
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-huawei-hms-location = { group = "com.huawei.hms", name = "location", version = "6.12.0.300" }
-androidx-lifecycle-service = { group = "androidx.lifecycle", name = "lifecycle-service", version.ref = "lifecycleService" }
-
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 jetbrains-kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinKsp" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
 android-library = { id = "com.android.library", version.ref = "agp" }

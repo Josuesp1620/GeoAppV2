@@ -17,7 +17,6 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
-        android:enableOnBackInvokedCallback="true"
         android:name=".core.application.GeoApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -27,8 +26,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GeoApp"
-        tools:targetApi="tiramisu">
-
+        tools:targetApi="31">
         <service
             android:name=".data.service.LocationBackgroundService"
             android:exported="false"
