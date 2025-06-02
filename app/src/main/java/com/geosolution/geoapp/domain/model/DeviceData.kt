@@ -6,14 +6,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DeviceData(
     var id: Int,
-    val name: String,
     val network: Int,
     val battery: Int,
     val state: String,
-    val team: String,
-    val gender: String,
-    val time: String,
-    val angle: Float,
-    val latitud: Double,
-    val longitud: Double
+    val timestamp: String, // Renamed from time, type String
+    val bearing: Float,    // Renamed from angle, type Float
+    val latitude: Double,  // Corrected from latitud
+    val longitude: Double  // Corrected from longitud
 ): Domain
