@@ -1,7 +1,6 @@
 package com.geosolution.geoapp.presentation.screens.map
 
 import android.annotation.SuppressLint
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
