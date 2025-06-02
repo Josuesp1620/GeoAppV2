@@ -1,18 +1,11 @@
 package com.geosolution.geoapp.presentation.screens.main
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.geosolution.geoapp.presentation.ui.theme.GeoAppTheme
-import com.geosolution.geolocation.AvailableService
-import com.geosolution.geolocation.GeoLocation
-import com.geosolution.geolocation.extensions.getAvailableService
-import com.google.android.gms.location.LocationRequest
 import dagger.hilt.android.AndroidEntryPoint
 import org.maplibre.android.MapLibre
-import com.huawei.hms.location.LocationRequest as HSMLocationRequest
-
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
@@ -21,22 +14,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         MapLibre.getInstance(this)
-
-        when (getAvailableService()) {
-            AvailableService.HMS -> {
-                Intent(this, MainActivity::class.java).apply {
-                    putExtra("request", HSMLocationRequest().setInterval(1000))
-                }
-            }
-
-            else -> {
-                Intent(this, MainActivity::class.java).apply {
-                    putExtra("request", LocationRequest.Builder(1000).build())
-                }
-            }
-        }
-
-        GeoLocation.setLogging(true)
 
         setContent {
 

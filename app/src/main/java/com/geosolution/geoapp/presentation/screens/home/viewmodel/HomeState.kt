@@ -1,6 +1,6 @@
 package com.geosolution.geoapp.presentation.screens.home.viewmodel
 
-import android.location.Location
+import com.geosolution.geoapp.domain.model.Location
 import com.geosolution.geoapp.domain.model.Client
 import com.geosolution.geoapp.domain.model.User
 

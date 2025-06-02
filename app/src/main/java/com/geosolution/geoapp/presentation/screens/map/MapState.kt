@@ -1,6 +1,6 @@
 package com.geosolution.geoapp.presentation.screens.map
 
-import android.location.Location
+import com.geosolution.geoapp.domain.model.Location
 
 data class MapState(
     val location: Location?=null,

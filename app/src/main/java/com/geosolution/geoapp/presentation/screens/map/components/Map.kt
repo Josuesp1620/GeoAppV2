@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.viewinterop.AndroidView
 
@@ -23,7 +24,6 @@ import org.maplibre.android.style.layers.RasterLayer
 import org.maplibre.android.style.sources.RasterSource
 import org.maplibre.android.style.sources.TileSet
 import org.maplibre.android.utils.BitmapUtils
-
 @Composable
 fun MarkerMapScreen(
     selectedMapStyle: String,
@@ -34,10 +34,19 @@ fun MarkerMapScreen(
     MapLibre.getInstance(context)
 
     val mapView = remember { MapView(context) }
-    val sydney = LatLng(state.location?.latitude!!, state.location.longitude)
+    val cameraMoved = remember { mutableStateOf(false) }
 
-    // Observa cambios en el estilo del mapa
-    LaunchedEffect(selectedMapStyle) {
+    val currentLocationDomain = state.location
+    val lat = currentLocationDomain?.latitude?.toDoubleOrNull()
+    val lon = currentLocationDomain?.longitude?.toDoubleOrNull()
+
+    val sydney = if (lat != null && lon != null) {
+        LatLng(lat, lon)
+    } else {
+        LatLng(0.0, 0.0)
+    }
+
+    LaunchedEffect(selectedMapStyle, state.location) {
         mapView.getMapAsync { mapboxMap ->
             mapboxMap.setStyle(selectedMapStyle) { style ->
                 val drawable = ContextCompat.getDrawable(context, R.drawable.location_marker)
@@ -60,6 +69,7 @@ fun MarkerMapScreen(
                     Toast.makeText(context, "Opera house", Toast.LENGTH_LONG).show()
                     true
                 }
+
                 val wmsUrlTemplate = "https://geosdot.servicios.gob.pe/geoserver/geoportal/wms?" +
                         "service=WMS" +
                         "&version=1.1.1" +
@@ -85,9 +95,16 @@ fun MarkerMapScreen(
                     val rasterLayer = RasterLayer(layerId, sourceId)
                     style.addLayer(rasterLayer)
                 }
-
             }
-            mapboxMap.cameraPosition = CameraPosition.Builder().target(sydney).zoom(13.0).build()
+
+            // Solo mueve la cámara si no se ha hecho antes y la ubicación es válida
+            if (!cameraMoved.value && lat != null && lon != null) {
+                mapboxMap.cameraPosition = CameraPosition.Builder()
+                    .target(sydney)
+                    .zoom(13.0)
+                    .build()
+                cameraMoved.value = true
+            }
         }
     }
 

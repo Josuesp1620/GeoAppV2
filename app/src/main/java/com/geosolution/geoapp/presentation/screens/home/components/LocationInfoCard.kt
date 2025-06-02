@@ -26,11 +26,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.geosolution.geoapp.core.location.LocationService
 import com.geosolution.geoapp.presentation.screens.home.viewmodel.HomeState
-import com.geosolution.geoapp.presentation.screens.home.viewmodel.HomeViewModel
+import com.geosolution.geoapp.presentation.ui.utils.permissions.PermissionState
 
 
 @Composable
@@ -38,6 +35,7 @@ fun LocationInfoCard(
     state: HomeState,
     modifier: Modifier = Modifier,
     activeLocation: (checked: Boolean) -> Unit,
+    permissionState: PermissionState // New parameter
 ) {
 
 
@@ -69,8 +67,9 @@ fun LocationInfoCard(
                 Switch(
                     checked = state.isLocationCurrent,
                     onCheckedChange = { checked ->
-                        activeLocation(checked)
-                    }
+                        activeLocation(checked) // The actual permission check before calling viewModel is in HomeScreen
+                    },
+                    enabled = permissionState.allPermissionsGranted // Disable switch if permissions not granted
                 )
             }
         }
@@ -93,7 +92,7 @@ fun LocationInfoCard(
                     )
                 )
                 Text(
-                    text = "Bearing: ${state.location?.bearing?.toInt() ?: "unknown"}",
+                    text = "Bearing: ${state.location?.bearing?.let { String.format("%.1f°", it) } ?: "unknown"}",
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

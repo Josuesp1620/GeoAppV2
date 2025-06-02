@@ -17,7 +17,7 @@ import com.geosolution.geoapp.data.local.entity.UserEntity
     ],
     exportSchema = false, version = 1,
 
-)
+    )
 abstract class Database : RoomDatabase() {
     abstract val userDao: UserDao
     abstract val clientDao: ClientDao

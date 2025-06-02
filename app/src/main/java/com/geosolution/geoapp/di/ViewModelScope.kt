@@ -106,10 +106,4 @@ object ViewModelScope {
         return DeviceDataGetStore(deviceDataRepository)
     }
 
-    @Provides
-    @ViewModelScoped
-    fun provideDeviceDeviceDataSaveGetStore(deviceDataRepository: DeviceDataRepository): DeviceDataGetStore {
-        return DeviceDataGetStore(deviceDataRepository)
-    }
-
 }

@@ -28,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -44,11 +45,13 @@ import com.geosolution.geoapp.presentation.screens.home.components.TopBarHomeScr
 import com.geosolution.geoapp.presentation.screens.home.viewmodel.HomeState
 import com.geosolution.geoapp.presentation.screens.home.viewmodel.HomeViewModel
 import com.geosolution.geoapp.presentation.screens.navigations.NavScreen
+import com.geosolution.geoapp.presentation.ui.utils.permissions.PermissionState
 
 @Composable
 fun HomeScreen(
     user: User?,
     navController: NavController,
+    permissionState: PermissionState, // New parameter
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
 
@@ -73,9 +76,21 @@ fun HomeScreen(
             state = state,
             user = user,
             navController = navController,
+            permissionState = permissionState, // Pass down
             modifier = Modifier.padding(paddingValues),
             activeLocation = { checked ->
-                homeViewModel.activeLocation(checked)
+                if (checked) { // Only check permissions if trying to activate
+                    if (permissionState.allPermissionsGranted) {
+                        homeViewModel.activeLocation(true)
+                    } else {
+                        // TODO: Optionally, show a message to the user that permissions are required.
+                        // For now, just prevent activation. The Switch might also be disabled based on this state.
+                        // Log this attempt for now.
+                        Log.w("HomeScreen", "Attempted to activate location without all permissions.")
+                    }
+                } else {
+                    homeViewModel.activeLocation(false) // Deactivation doesn't need permission check
+                }
             }
         )
 
@@ -87,8 +102,9 @@ fun HomeScreen(
 fun HomeScreenContent(
     state: HomeState,
     user: User?,
-    activeLocation: (checked: Boolean) -> Unit,
+    activeLocation: (checked: Boolean) -> Unit, // This lambda now has permission check logic from HomeScreen
     navController: NavController,
+    permissionState: PermissionState, // New parameter
     modifier: Modifier,
     bottomPadding: Dp = 0.dp,
 ) {
@@ -105,7 +121,8 @@ fun HomeScreenContent(
                     activeLocation(checked)
                 },
                 user = user,
-                navController = navController
+                navController = navController,
+                permissionState = permissionState // Pass down
             )
         }
 
