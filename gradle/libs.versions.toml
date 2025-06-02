@@ -1,22 +1,22 @@
 [versions]
 agp = "8.10.1"
 kotlin = "1.9.24"
-coreKtx = "1.13.1"
+coreKtx = "1.16.0"
 junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.8.2"
-activityCompose = "1.9.0"
-composeBom = "2024.06.00"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+lifecycleRuntimeKtx = "2.9.0"
+activityCompose = "1.10.1"
+composeBom = "2025.05.01"
 hiltAndroid = "2.51"
-kotlinKsp = "1.9.10-1.0.13"
-playServicesBasement = "18.4.0"
+kotlinKsp = "1.9.24-1.0.20"
+playServicesBasement = "18.7.0"
 playServicesLocation = "21.3.0"
-maplibreGl= "11.0.0"
+maplibreGl= "11.9.0"
 appcompat = "1.7.0"
 material = "1.12.0"
 kotlinPlugin = "1.9.24"
-lifecycleService = "2.8.2"
+lifecycleService = "2.9.0"
 
 [libraries]
 # Core KTX
@@ -36,13 +36,13 @@ hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", ve
 jetbrains-kotlinx-serialization = { group = "org.jetbrains.kotlinx", name="kotlinx-serialization-json", version = "1.5.1" }
 
 # DataStore
-androidx-datastore-preferences = { group = "androidx.datastore", name="datastore-preferences", version = "1.1.1" }
+androidx-datastore-preferences = { group = "androidx.datastore", name="datastore-preferences", version = "1.1.7" }
 
 # Room
-androidx-room-runtime = { group = "androidx.room", name="room-runtime", version = "2.6.1" }
-androidx-room-ktx = { group = "androidx.room", name="room-ktx", version = "2.6.1" }
-androidx-room-compiler = { group = "androidx.room", name="room-compiler", version = "2.6.1" }
-androidx-room-paging = { group = "androidx.room", name="room-paging", version = "2.6.1" }
+androidx-room-runtime = { group = "androidx.room", name="room-runtime", version = "2.7.1" }
+androidx-room-ktx = { group = "androidx.room", name="room-ktx", version = "2.7.1" }
+androidx-room-compiler = { group = "androidx.room", name="room-compiler", version = "2.7.1" }
+androidx-room-paging = { group = "androidx.room", name="room-paging", version = "2.7.1" }
 
 # Ktor
 ktor-core = { group = "io.ktor", name="ktor-client-core", version = "2.3.3" }
@@ -70,10 +70,10 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 
 # Icons Extended
-androidx-compose-material = { group = "androidx.compose.material", name = "material-icons-extended", version = "1.6.8" }
+androidx-compose-material = { group = "androidx.compose.material", name = "material-icons-extended", version = "1.7.8" }
 
 # Navigate Compose
-androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version = "2.7.7" }
+androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version = "2.9.0" }
 
 # Compose Test
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }

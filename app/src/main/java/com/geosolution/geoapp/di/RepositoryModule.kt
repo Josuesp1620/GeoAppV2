@@ -2,6 +2,7 @@ package com.geosolution.geoapp.di
 
 import android.content.Context
 import com.geosolution.geoapp.data.local.dao.ClientDao
+import com.geosolution.geoapp.data.local.dao.DeviceDataDao
 import com.geosolution.geoapp.data.local.dao.UserDao
 import com.geosolution.geoapp.data.local.database.Database
 import com.geosolution.geoapp.data.local.datastore.AuthDataStore
@@ -11,8 +12,10 @@ import com.geosolution.geoapp.data.repository.AuthRepositoryImpl
 import com.geosolution.geoapp.data.repository.ClientRepositoryImpl
 import com.geosolution.geoapp.data.repository.LocationRepositoryImpl
 import com.geosolution.geoapp.data.repository.UserRepositoryImpl
+import com.geosolution.geoapp.data.repository.DeviceDataRepositoryImpl
 import com.geosolution.geoapp.domain.repository.AuthRepository
 import com.geosolution.geoapp.domain.repository.ClientRepositoy
+import com.geosolution.geoapp.domain.repository.DeviceDataRepository
 import com.geosolution.geoapp.domain.repository.LocationRepository
 import com.geosolution.geoapp.domain.repository.UserRepository
 import dagger.Module
@@ -64,5 +67,11 @@ object RepositoryModule {
         dataBase = dataBase.userDao
     )
 
-
+    @Provides
+    @Singleton
+    fun provideDeviceDataRepository(
+        deviceDataDao: DeviceDataDao
+    ): DeviceDataRepository = DeviceDataRepositoryImpl(
+        dataBase = deviceDataDao
+    )
 }
