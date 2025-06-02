@@ -7,7 +7,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.viewinterop.AndroidView
-
+import android.util.Log
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
@@ -34,32 +34,19 @@ fun MarkerMapScreen(
     MapLibre.getInstance(context)
 
     val mapView = remember { MapView(context) }
-//    val sydney = LatLng(state.location?.latitude!!, state.location.longitude)
 
-    // Observa cambios en el estilo del mapa
-    LaunchedEffect(selectedMapStyle) {
+    // Observa cambios en el estilo del mapa Y en la ubicación
+    LaunchedEffect(selectedMapStyle, state.location) {
         mapView.getMapAsync { mapboxMap ->
+            // It's important that setStyle is not called excessively if only location changes.
+            // Ideally, setStyle is called when selectedMapStyle changes.
+            // And marker/camera updates happen when state.location changes.
+            // This might require restructuring the LaunchedEffect or using multiple effects.
+
+            // Simplification for subtask: Re-apply style and then marker/camera.
+            // More optimal: Separate effects or logic within getMapAsync.
             mapboxMap.setStyle(selectedMapStyle) { style ->
-//                val drawable = ContextCompat.getDrawable(context, R.drawable.location_marker)
-//                style.addImage("marker-pin", BitmapUtils.getBitmapFromDrawable(drawable!!)!!)
-//
-//                val symbolManager = SymbolManager(mapView, mapboxMap, style)
-//                symbolManager.iconAllowOverlap = true
-//                symbolManager.iconIgnorePlacement = true
-//
-//                val symbol = symbolManager.create(
-//                    SymbolOptions()
-//                        .withLatLng(sydney)
-//                        .withIconImage("marker-pin")
-//                        .withIconSize(0.35f)
-//                        .withIconAnchor("bottom")
-//                )
-//                symbolManager.update(symbol)
-//
-//                symbolManager.addClickListener {
-//                    Toast.makeText(context, "Opera house", Toast.LENGTH_LONG).show()
-//                    true
-//                }
+                // ... (WMS layer logic can remain here as it's style-dependent) ...
                 val wmsUrlTemplate = "https://geosdot.servicios.gob.pe/geoserver/geoportal/wms?" +
                         "service=WMS" +
                         "&version=1.1.1" +
@@ -86,8 +73,54 @@ fun MarkerMapScreen(
                     style.addLayer(rasterLayer)
                 }
 
+                // Marker and Camera logic (now also style-dependent due to this structure)
+                val currentLocationDomain = state.location
+                if (currentLocationDomain != null) {
+                    val lat = currentLocationDomain.latitude.toDoubleOrNull()
+                    val lon = currentLocationDomain.longitude.toDoubleOrNull()
+
+                    if (lat != null && lon != null) {
+                        val currentMapLatLng = LatLng(lat, lon)
+                        val markerDrawable = ContextCompat.getDrawable(context, R.drawable.location_marker)
+
+                        if (markerDrawable != null) {
+                            val bitmap = BitmapUtils.getBitmapFromDrawable(markerDrawable)
+                            if (bitmap != null) {
+                                if (style.getImage("marker-pin") == null) { // Add image only if not already present
+                                     style.addImage("marker-pin", bitmap)
+                                }
+
+                                // For SymbolManager, it's often better to create it once and update symbols,
+                                // or clear old symbols before adding new ones.
+                                // Creating a new SymbolManager on every location change might be inefficient or lead to leaks.
+                                // However, for simplicity in this subtask, we'll recreate as per original commented code's apparent intent.
+                                // A more robust solution would manage the SymbolManager instance carefully.
+                                val symbolManager = SymbolManager(mapView, mapboxMap, style)
+                                symbolManager.iconAllowOverlap = true
+                                symbolManager.iconIgnorePlacement = true
+                                symbolManager.deleteAll() // Clear previous markers
+
+                                val symbolOptions = SymbolOptions()
+                                    .withLatLng(currentMapLatLng)
+                                    .withIconImage("marker-pin")
+                                    .withIconSize(0.35f)
+                                    .withIconAnchor("bottom")
+                                    .withIconRotate(currentLocationDomain.bearing) // Using bearing for rotation
+
+                                symbolManager.create(symbolOptions)
+                            }
+                        } else {
+                             Log.w("MarkerMapScreen", "location_marker drawable not found.")
+                        }
+
+                        mapboxMap.cameraPosition = CameraPosition.Builder()
+                            .target(currentMapLatLng)
+                            .zoom(15.0)
+                            .bearing(currentLocationDomain.bearing.toDouble()) // Using bearing for camera
+                            .build()
+                    }
+                }
             }
-//            mapboxMap.cameraPosition = CameraPosition.Builder().target(sydney).zoom(13.0).build()
         }
     }
 

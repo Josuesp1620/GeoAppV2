@@ -34,8 +34,8 @@ import androidx.navigation.NavController
 import com.geosolution.geoapp.R
 import com.geosolution.geoapp.domain.model.User
 import com.geosolution.geoapp.presentation.screens.home.viewmodel.HomeState
-import com.geosolution.geoapp.presentation.screens.home.viewmodel.HomeViewModel
 import com.geosolution.geoapp.presentation.screens.navigations.NavScreen
+import com.geosolution.geoapp.presentation.ui.utils.permissions.PermissionState
 
 
 @Composable
@@ -45,7 +45,7 @@ fun TopBarHomeScreen(
     activeLocation: (checked: Boolean) -> Unit,
     user: User,
     navController: NavController,
-
+    permissionState: PermissionState // New parameter
 ) {
     Box(
         modifier = modifier
@@ -69,10 +69,9 @@ fun TopBarHomeScreen(
             )
             Spacer(modifier = Modifier.size(32.dp))
             LocationInfoCard(
-                activeLocation = { checked ->
-                    activeLocation(checked)
-                },
-                state = state
+                activeLocation = { checked -> activeLocation(checked) },
+                state = state,
+                permissionState = permissionState // Pass down
             )
         }
     }
