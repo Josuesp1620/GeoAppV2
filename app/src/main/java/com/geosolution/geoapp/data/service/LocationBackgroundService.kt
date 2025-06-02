@@ -5,8 +5,12 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.BatteryManager
 import android.os.Build
 import android.os.IBinder
 import android.os.Looper
@@ -14,10 +18,15 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.geosolution.geoapp.R // Make sure this R is correctly resolved
+import com.geosolution.geoapp.domain.model.DeviceData
 import com.geosolution.geoapp.domain.model.Location
+import com.geosolution.geoapp.domain.use_case.device_data.DeviceDataSaveStoreUseCase
 import com.geosolution.geoapp.domain.use_case.location.LocationSaveCacheUseCase
 import com.google.android.gms.location.*
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -29,6 +38,9 @@ class LocationBackgroundService : Service() {
 
     @Inject
     lateinit var locationSaveCacheUseCase: LocationSaveCacheUseCase
+
+    @Inject
+    lateinit var deviceDataSaveStoreUseCase: DeviceDataSaveStoreUseCase
 
     @Inject
     lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -69,6 +81,29 @@ class LocationBackgroundService : Service() {
                         try {
                             locationSaveCacheUseCase(location)
                             Log.d(TAG, "Location saved: $location")
+
+                            // New DeviceData saving logic
+                            try {
+                                val currentTimestamp = getCurrentTimestamp()
+                                val batteryLevel = getBatteryLevel()
+                                val networkStatus = getNetworkStatus()
+                                val deviceState = getDeviceState()
+
+                                val deviceData = DeviceData(
+                                    id = 0, // Will be handled by the repository/Room
+                                    network = networkStatus,
+                                    battery = batteryLevel,
+                                    state = deviceState,
+                                    timestamp = currentTimestamp,
+                                    bearing = androidLocation.bearing,
+                                    latitude = androidLocation.latitude,
+                                    longitude = androidLocation.longitude
+                                )
+                                deviceDataSaveStoreUseCase(deviceData)
+                                Log.d(TAG, "DeviceData saved: $deviceData")
+                            } catch (e: Exception) {
+                                Log.e(TAG, "Error saving DeviceData: ${e.message}", e)
+                            }
                         } catch (e: Exception) {
                             Log.e(TAG, "Error saving location: ${e.message}", e)
                         }
@@ -94,12 +129,7 @@ class LocationBackgroundService : Service() {
                 ACTION_STOP_LOCATION_SERVICE -> {
                     Log.d(TAG, "Stopping service via action")
                     stopLocationUpdates()
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        stopForeground(STOP_FOREGROUND_REMOVE)
-                    } else {
-                        @Suppress("DEPRECATION")
-                        stopForeground(true)
-                    }
+                    stopForeground(STOP_FOREGROUND_REMOVE)
                     stopSelf()
                     Log.d(TAG, "Location service stopped successfully via action")
                 }
@@ -116,7 +146,7 @@ class LocationBackgroundService : Service() {
             Log.d(TAG, "Started foreground service.")
         } catch (e: Exception) {
             Log.e(TAG, "Error starting foreground service: ${e.message}", e)
-             // Fallback or error handling if startForeground fails (e.g., for POST_NOTIFICATIONS permission on Android 13+)
+            // Fallback or error handling if startForeground fails (e.g., for POST_NOTIFICATIONS permission on Android 13+)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 Log.e(TAG, "POST_NOTIFICATIONS permission not granted for foreground service.")
@@ -208,6 +238,35 @@ class LocationBackgroundService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? {
         return null // Not a bound service
+    }
+
+    private fun getCurrentTimestamp(): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        return sdf.format(Date())
+    }
+
+    private fun getBatteryLevel(): Int {
+        val batteryManager = getSystemService(Context.BATTERY_SERVICE) as BatteryManager
+        return batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+    }
+
+    private fun getNetworkStatus(): Int {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return 0 // 0 for No Network
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return 0 // 0 for No Network
+
+        return when {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> 1 // 1 for WiFi
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> 2 // 2 for Mobile Data
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> 3 // 3 for Ethernet (Optional)
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> 4 // 4 for Bluetooth (Optional)
+            else -> 0 // 0 for Unknown or No Network
+        }
+    }
+
+    private fun getDeviceState(): String {
+        // For now, returns a static "active". This can be expanded later.
+        return "active"
     }
 
     override fun onDestroy() {
